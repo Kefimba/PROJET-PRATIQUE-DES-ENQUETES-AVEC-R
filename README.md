@@ -1,6 +1,6 @@
 Exposé : Pratique des enquêtes avec R
 
-Plan:
+Plan :
 
 I. Partie théorique
 
