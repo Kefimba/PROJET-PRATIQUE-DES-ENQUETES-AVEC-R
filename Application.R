@@ -10,6 +10,9 @@ library(shinyWidgets)
 library(plotly)
 library(scales)
 
+# Augmenter la taille maximale des requêtes (ici 500 Mo)
+options(shiny.maxRequestSize = 500 * 1024^2)  # 500 Mo
+
 # Fonction pour lire les fichiers
 lire_fichier_generique <- function(path, ext) {
   switch(tolower(ext),
@@ -24,12 +27,6 @@ lire_fichier_generique <- function(path, ext) {
          "sav"  = read_sav(path),
          stop("Format de fichier non pris en charge"))
   }
-# Enregistrer la base après traitement
-observeEvent(input$enregistrer, {
-  req(data_actuelle())
-  write.csv(data_actuelle(), "traitement_final.csv", row.names = FALSE)
-  output$message_enregistrement <- renderText("Données enregistrées sous 'traitement_final.csv'")
-})
 
 # Fonction pour obtenir le mode
 get_mode <- function(x) {
@@ -48,6 +45,7 @@ detecter_aberrantes <- function(x) {
   out[is.na(out)] <- FALSE
   out
 }
+
 
 # UI
 ui <- dashboardPage(
@@ -69,7 +67,9 @@ ui <- dashboardPage(
                menuSubItem("Visualisation",       tabName = "visualisation", icon = icon("table")),
                menuSubItem("Doublons",            tabName = "doublons",      icon = icon("copy")),
                menuSubItem("Valeurs Manquantes",  tabName = "manquantes",    icon = icon("question-circle")),
-               menuSubItem("Valeurs Aberrantes",  tabName = "aberrantes",    icon = icon("exclamation-triangle"))
+               menuSubItem("Valeurs Aberrantes",  tabName = "aberrantes",    icon = icon("exclamation-triangle")),
+               menuSubItem("Enregistrer la base",  tabName = "enregistrer",    icon = icon("save"))
+               
       ),
       menuItem("Statistiques Descriptives", tabName = "stat_desc", icon = icon("chart-bar"))
     )
@@ -181,7 +181,15 @@ ui <- dashboardPage(
                 )
               )
       ),
-      
+      # Onglet Traitement avec un bouton pour enregistrer la base traitée
+      tabItem("traitement",
+              fluidRow(
+                box(width = 12, status = "success", title = "Enregistrer la base traitée",
+                    actionBttn("enregistrer", "Enregistrer la base traitée", style = "gradient", color = "success", icon = icon("save"))
+                ),
+                verbatimTextOutput("message_enregistrement")  # Affiche un message de confirmation après l'enregistrement
+              )
+      ),
       # Statistiques descriptives
       tabItem("stat_desc",
               fluidRow(
@@ -212,6 +220,7 @@ server <- function(input, output, session) {
   data_originale <- reactiveVal(NULL)
   data_actuelle <- reactiveVal(NULL)
   base_existe    <- reactiveVal(FALSE)
+  
   
   # Détection du type pour stats
   output$var_type <- reactive({
@@ -495,7 +504,27 @@ server <- function(input, output, session) {
     out0 <- sum(ab0); out1 <- sum(detecter_aberrantes(d1[[input$var_aberrante]]))
     output$message_aber <- renderText(paste(msg, "\nTraités:", out0 - out1))
   })
+   # Enregistrer la base traitée après traitement
+  observeEvent(input$enregistrer, {
+    req(data_actuelle())  # Vérifier que les données sont disponibles
+    file_path <- "base_traitee.csv"  # Spécifiez le nom de fichier souhaité (chemin d'enregistrement)
+
+    tryCatch({
+      write.csv(data_actuelle(), file_path, row.names = FALSE)  # Enregistrement du fichier CSV
+      output$message_enregistrement <- renderText(paste("Base enregistrée sous :", file_path))
+    }, error = function(e) {
+      output$message_enregistrement <- renderText(paste("Erreur lors de l'enregistrement :", e$message))
+    })
+  })
   
+  # --- Enregistrer la base traitée ---
+  observeEvent(input$enregistrer, {
+    req(data_actuelle())
+    # Demander à l'utilisateur un emplacement pour enregistrer la base
+    write.csv(data_actuelle(), file = "base_traitee.csv", row.names = FALSE)
+    output$message_enregistrement <- renderText("Base enregistrée sous 'base_traitee.csv'.")
+  })
+
   # --- Statistiques descriptives ---
   output$var_stat_select <- renderUI({
     req(data_actuelle()); selectInput("var_stat", "Variable", names(data_actuelle()))
@@ -546,6 +575,18 @@ server <- function(input, output, session) {
         freq$Pourcent <- round(freq$Fréquence / sum(freq$Fréquence) * 100, 2)
         datatable(freq) %>% formatRound("Pourcent", 2)
       }
+    })
+  })
+  # Enregistrer la base après traitement
+  # Ajout de la logique d'enregistrement
+  observeEvent(input$enregistrer, {
+    req(data_actuelle())  # Vérifier que les données sont disponibles
+    file_path <- "base_traitee.csv"  # Spécifiez le nom de fichier souhaité
+    tryCatch({
+      write.csv(data_actuelle(), file_path, row.names = FALSE)  # Enregistrement du fichier CSV
+      output$message_enregistrement <- renderText(paste("Base enregistrée sous :", file_path))
+    }, error = function(e) {
+      output$message_enregistrement <- renderText(paste("Erreur lors de l'enregistrement :", e$message))
     })
   })
 }
