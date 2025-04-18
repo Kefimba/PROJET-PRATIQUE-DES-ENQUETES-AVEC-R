@@ -1,0 +1,927 @@
+---
+title: "PRATIQUES D'ENQUETES AVEC R"
+author: "Nguemfouo Ngoumtsa Célina et Mamady I Berete"
+date: "Vendredi, 18 Avril 2025"
+output:
+  beamer_presentation: 
+    theme: "AnnArbor"
+    colortheme: "beaver"
+    fonttheme: "structurebold"
+  header-includes:
+  - \usepackage{xcolor}
+  - \usepackage{graphicx}
+  - |
+    \setbeamertemplate{title page}{
+      \begin{centering}
+        \includegraphics[height=1.5cm]{LOGO1.png}\par\vspace{1em}
+      \end{centering}
+    }
+  pdf_document: default
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo    = FALSE,
+  warning = FALSE,
+  message = FALSE
+)
+```
+
+```{r}
+#Librairies:
+# Installer les packages nécessaires s'ils ne sont pas déjà installés
+packages <- c("haven", "dplyr", "gtsummary", "tidyr", "labelled",
+              "purrr", "gt", "modeest", "ggplot2", "scales")
+
+install_if_missing <- function(pkg) {
+  if (!requireNamespace(pkg, quietly = TRUE)) {
+    install.packages(pkg)
+  }
+}
+
+invisible(lapply(packages, install_if_missing))
+
+# Charger les librairies
+library(haven)
+library(dplyr)
+library(gtsummary)
+library(tidyr)
+library(labelled)
+library(purrr)
+library(gt)
+library(modeest)
+library(ggplot2)
+library(scales)
+```
+
+## \textcolor{purple}{\textbf{\textit{Introduction}}}
+
+
+L’épuration des données après enquête est indispensable pour garantir des résultats fiables. Avec R, on :
+
+* Automatise et documente chaque étape,
+* Traite rapidement les valeurs manquantes, aberrantes ou incohérentes,
+* Standardise formats et unités,
+* Crée et enrichit des variables selon la logique métier.
+
+Cette démarche, à la fois **reproductible**, **flexible** et **efficace**, constitue la base de toute analyse rigoureuse.
+
+## \textcolor{purple}{\textbf{\textit{Plan de l'exposé}}}
+
+
+Introduction
+
+I. Partie théorique
+
+  1. Présentation d'une enquête
+  2. Traitement d'une base de données
+
+II. Partie pratique
+
+  1. Cas d'une enquête ménage
+  2. Cas d'une enquête individu
+
+III. Automatisation du traitement d'une base de données
+
+
+## \textcolor{purple}{\textbf{\textit{I. Partie théorique}}}
+
+### \textcolor{pink}{\textbf{\textit{1. Présentation d'une enquête}}}
+
+
+Une **enquête** est une méthode de collecte d'information visant à analyser un phénomène, évaluer une situation ou vérifier des hypoyhèses. Elle s'appuie sur l'étude d'un échantillon representatif d'une population, via des questionnaires, des entretiens, des observation ou l'exploitation de données existantes. Elle a pour objectif de :
+
+* **Décrire** : analyser les caractéristiques d'une population.
+* **Expliquer** : identifier les relations entre différentes variables.
+* **Prévoir** : anticiper les tendances à partir des données recueillies.
+* **Evaluer** : Mesurer l'impact d'une politique ou d'un programme.
+
+
+## \textcolor{purple}{\textbf{\textit{I. Partie théorique}}}
+
+### \textcolor{pink}{\textbf{\textit{1. Présentation d'une enquête}}}
+
+
+On distingue plusieurs types d'enquêtes qui peuvent être classés en plusieurs catégories:
+
+
+* **Selon l'objectif de l'enquête** : on distingue les enquêtes descriptives, les enquêtes analytiques, les enquêtes évaluatives et les enquêtes expérimentales.
+
+* **Selon la méthode de collecte ** : on a les enquêtes par questionnaire, par entretien, par observation et par expérimentation.
+
+* **Selon la Périodicité** : c'est ici que l'on retrouve les enquêtes ponctuelle,  longitudinale et récurrente.
+
+* **Selon l'unité statistique enquêtée** : là on distingue les enquêtes ménage,  individuelle, sur l’entreprise,  communautaire ou collective, etc.
+
+## \textcolor{purple}{\textbf{\textit{I. Partie théorique}}}
+
+### \textcolor{pink}{\textbf{\textit{1. Présentation d'une enquête}}}
+
+
+Les principaux types de variables sont :
+
+* **Les variables d'identification** : on retrouve parmi elles les identifiants de l’enquêteur et du répondant, la date et lieu de l’enquête ainsi que les coordonnées GPS (si collectées).
+
+* **Les variables socio-démographiques** : il s'agit de l'âge, le sexe, l'état matrimonial, le niveau d’instruction, la profession, le revenu, la taille du ménage, etc. 
+
+* **Les variables de mode de vie** : c'est ici que l'on retroive le milieu de résidence, (urbain/rural), l'accès à l’eau, à l’électricité, à l’éducation et à la santé, activité principale, etc.
+
+On distingue également les variables spécifiques au thème de l'enquête et les variables permettant d'évaluer la qualité des données (temps de réponse, ...).
+
+
+## \textcolor{purple}{\textbf{\textit{I. Partie théorique}}}
+
+### \textcolor{pink}{\textbf{\textit{2. Traitement d'une base de données}}}
+
+* **Traitement à chaud** : dès la phase de collecte, le superviseur peut intervenir pour limiter la propagation des erreurs. Il peut notament verifier le contrôle géographique, le chronométrage, le profil de réponse ainsi que le feedback quotidien.
+
+Une fois l'enquête terminée, son appurage à froid peut commencer.
+
+* **Visualisation de la base** : la première étape est d'importer et de visualiser la base dans l'environnement R. Pour ce faire, les librairies **haven**, **readr** ou **readxl** peuvent être utilisées.
+La visualisation de la base peut également necessiter la quelques graphiques ou tableaux. Pour ce faire, les libriries **ggplot2** et **gtsummary** peuvent être utilisées.
+
+## \textcolor{purple}{\textbf{\textit{I. Partie théorique}}}
+
+### \textcolor{pink}{\textbf{\textit{2. Traitement d'une base de données}}}
+
+* **Traitement des doublons** : si des doublons sont détectés, ils doivent être supprimés de peur de biaiser les résultats.
+Toutefois, l'idéal reste toujours de contacter les ménages enquêtés pour avoir de vraies informations.
+
+* **Traitement des valeurs manquantes** : on distingue généralement trois types de valeurs manquantes : 
+  - **MCAR (Missing Completely At Random)** : les données sont manquantes de façon complètement aléatoire. (Une ligne d’un questionnaire a été perdue à cause d’un problème technique.); 
+  - **MAR (Missing At Random)** : les données sont manquantes de manière conditionnelle. (Les personnes âgées répondent moins souvent à certaines questions sensibles.);
+  - **MNAR (Missing Not At Random)** : les données sont manquantes de manière non aléatoire. (Une personne qui ne souhaite pas déclarer son revenu parce qu’il est très élevé ou très faible.)
+  
+## \textcolor{purple}{\textbf{\textit{I. Partie théorique}}}
+
+### \textcolor{pink}{\textbf{\textit{2. Traitement d'une base de données}}}
+
+* **Traitement des valeurs manquantes** : le traitement des valeurs manquantes dépend à la fois du **type de variable** concernée (numérique, catégorielle ou texte libre) et du **contexte de l’analyse**.
+
+  - **Variables numériques** : elles peuvent être traitées par suppression, imputation simple, imputation conditionnelle ou régression. On distingue également des méthodes plus avancées comme la méthode des k-NN (k plus proches voisins), la méthode des arbres de décision ainsi que les méthodes bayésiennes ou multiple imputation.
+
+  - **Variables catégorielles (facteurs)** : pour ce type de variables, on a comme méthode la suppression, l'imputation simple et l'imputation conditionnelle. Les modèles de classification (arbre de décision, régression logistique) peuvent également être utilisés, ainsi que d'autres méthodes comme l'utilisation de modèles d’apprentissage automatique adaptés aux variables catégorielles.
+
+## \textcolor{purple}{\textbf{\textit{I. Partie théorique}}}
+
+### \textcolor{pink}{\textbf{\textit{2. Traitement d'une base de données}}}
+
+* **Traitement des valeurs manquantes** :
+
+  - **Variables textuelles (libre)** : pour ce type de variable, on a la suppression ou le remplacement par une chaîne vide, la création d’une modalité "Manquant" ou "Non précisé", l'imputation par des règles logiques ou NLP (traitement automatique du langage) : comme une extraction de texte similaire à partir d’autres champs ou une classification sémantique si le texte a des structures régulières.
+
+Il est important de noter que toutes les valeurs manquantes ne sont pas à imputer.
+
+* **Traitement des valeurs aberrantes** : une valeur aberrante est une observation dont la distance à la distribution centrale dépasse significativement celle des autres points. Elle peut être légitime ou erronée. Elle peut être causée par des erreurs humaines, des problèmes techniques ou des caractéristiques intrinsèques de la population.
+
+## \textcolor{purple}{\textbf{\textit{I. Partie théorique}}}
+
+### \textcolor{pink}{\textbf{\textit{2. Traitement d'une base de données}}}
+
+* **Traitement des valeurs aberrantes** : la détection de ces valeurs peut se faire de manière graphique par une boîte à moustaches (boxplot), un histogramme ou un scatterplot, mais également de manière statistique grace au Z-score, la méthode IQR, la distance de Mahalanobis et le score de robustesse. Parmi les méthodes de traitement des valeurs manquantes, on distingue la suppression des aberrations, l'imputation, la Winsorisation et la transformation. Des modèles robustes comme les arbres de decision peuvent également être utilisés dans le cadre du traitement des valeus aberrantes.
+
+* **Traitement des incohérences** : une valeur incohérente est une donnée qui ne respecte pas les règles ou les attentes logiques d'un jeu de données. 
+
+## \textcolor{purple}{\textbf{\textit{I. Partie théorique}}}
+
+### \textcolor{pink}{\textbf{\textit{2. Traitement d'une base de données}}}
+
+* **Traitement des incohérences** : par exemple, des valeurs numériques hors de portée attendue, des valeurs textuelles incorrectes ou mal formatées, des incohérence entre plusieurs variables et des valeurs manquantes ou vides là où elles sont attendues. Afin de détecter ces incohérences, on peut se servir de plage de valeurs, d'histogrammes et Boxplots, d'une détection par logique entre variables, de la vérification des formats de données, de la détection des valeurs manquantes ou vides, voire d'algorithmes de détection de valeurs aberrantes.
+
+
+
+## \textcolor{purple}{\textbf{\textit{II. Partie pratique}}}
+
+### \textcolor{pink}{\textbf{\textit{1. Cas d'une enquête ménage}}}
+
+La base utilisée est la base ménage de l'EHCVM Sénégal de 2021.
+
+* **Chargement et visualisation des données**
+
+```{r, warning=FALSE}
+menage <- read_dta("SEN_2021_EHCVM-2_v01_M_STATA14 (2)/ehcvm_menage_sen2021.dta")
+```
+
+Afin de visualiser correcttement la base, il faut transformer les variables catégorielles en facteurs
+
+```{r, warning=FALSE}
+menage <- menage %>%
+  mutate(across(where(is.labelled), ~ as_factor(.)))
+```
+
+On présente à présent quelques observations et quelles variables de notre base.
+
+```{r, warning=FALSE}
+apercu <- menage %>%
+  slice_head(n = 10) %>%
+  select(1:10) %>%
+  tbl_df()
+apercu
+```
+
+## \textcolor{purple}{\textbf{\textit{II. Partie pratique}}}
+
+### \textcolor{pink}{\textbf{\textit{1. Cas d'une enquête ménage}}}
+
+* **Traitement des doublons**
+
+```{r, warning=FALSE}
+n_doublons <- sum(duplicated(menage))
+cat("La base contient", n_doublons, "doublon.")
+```
+On peut donc passer à l'étape suivante.
+
+* **Traitement des valeurs manquantes**
+
+Affichons tout d'abord les variables qui contiennent des valeurs manquantes :
+
+## \textcolor{purple}{\textbf{\textit{II. Partie pratique}}}
+
+### \textcolor{pink}{\textbf{\textit{1. Cas d'une enquête ménage}}}
+
+```{r}
+na_summary <- menage %>%
+  summarise(across(everything(), ~ sum(is.na(.)))) %>%
+  pivot_longer(everything(), names_to = "variable", values_to = "nb_na") %>%
+  filter(nb_na > 0) %>%
+  mutate(
+    total = nrow(menage),
+    pourcentage = round(100 * nb_na / total, 1),
+    label = map_chr(variable, ~ as.character(var_label(menage[[.x]])))
+  ) %>%
+  select(variable, label, nb_na, pourcentage)
+
+# 3. Mise en forme avec gtsummary
+na_summary %>%
+  rename(
+    `Nom de la variable` = variable,
+    `Libellé` = label,
+    `Nombre de NA` = nb_na,
+    `% de NA` = pourcentage
+  ) %>%
+  gt::gt() %>%
+  gt::tab_header(
+    title = "Résumé des valeurs manquantes") %>%
+  gt::fmt_number(
+    columns = `% de NA`,
+    decimals = 3,
+    suffixing = TRUE
+  ) %>%
+  gt::cols_align(
+    align = "center",
+    columns = everything()
+  )
+```
+
+La seule variable qui comporte des valeurs manquantes est la variable superf. Mais son taux de NA est beaucoup trop grand pour imputer sans biaiser les données.
+
+* **Traitement des valeurs aberrantes**
+
+Commençons par lister toutes les variables numériques de la base :
+
+```{r}
+vars_numeriques <- menage %>%
+  select(where(is.numeric)) %>%
+  names()
+vars_numeriques
+```
+
+## \textcolor{purple}{\textbf{\textit{II. Partie pratique}}}
+
+### \textcolor{pink}{\textbf{\textit{1. Cas d'une enquête ménage}}}
+
+Les variables qui nous interressent sont **superf, grosrum, petitrum, porc, lapin** et **volail**.
+
+```{r, fig.width=6, fig.height=2}
+# Restructurer les données en format long
+menage_long <- menage %>%
+  select(superf, grosrum, petitrum, porc, lapin, volail) %>%
+  pivot_longer(cols = everything(), names_to = "variable", values_to = "valeur")
+
+# Affichage des boxplots
+ggplot(menage_long, aes(x = variable, y = valeur, fill = variable)) +
+  geom_boxplot(outlier.color = "black", outlier.shape = 16) +
+  theme_minimal() +
+  scale_fill_brewer(palette = "pink") +  
+  labs(title = "Boxplots de différentes variables", x = "Variable", y = "Valeur") +
+  theme(legend.position = "none")
+
+```
+
+Comme on le voit sur les boxplots, ces variables sont toutes spécifiques au ménage. Les traiter pourrait biaiser les donner et faire perdre les informations.
+
+## \textcolor{purple}{\textbf{\textit{II. Partie pratique}}}
+
+### \textcolor{pink}{\textbf{\textit{1. Cas d'une enquête ménage}}}
+
+* **Statistiques descriptives**
+
+```{r, fig.width=4, fig.height=2}
+# Préparation des données : compter les modalités et calculer les pourcentages
+pie_data <- menage %>%
+  filter(!is.na(elec_ac)) %>%
+  count(elec_ac) %>%
+  mutate(
+    pourcentage = round(100 * n / sum(n), 1),
+    label = paste0(elec_ac, " (", pourcentage, "%)")
+  )
+
+# Affichage du pie chart
+ggplot(pie_data, aes(x = "", y = n, fill = elec_ac)) +
+  geom_col(width = 1, color = "white") +
+  coord_polar("y") +
+  theme_void() +
+  geom_text(aes(label = paste0(pourcentage, "%")),
+            position = position_stack(vjust = 0.5), size = 4, color = "white") +
+  labs(title = "Répartition de la variable elec_ac") +
+  scale_fill_brewer(palette = "Pink", name = "Accès à l'électricité")
+
+```
+
+## \textcolor{purple}{\textbf{\textit{II. Partie pratique}}}
+
+### \textcolor{pink}{\textbf{\textit{1. Cas d'une enquête ménage}}}
+
+```{r}
+# 1. Définir les variables catégorielles
+vars_cat <- c("elec_ac", "toilet",
+              "tv", "fer", "frigo", "cuisin", "ordin", "decod", "car")
+
+# 2. Tableau récapitulatif avec gtsummary
+menage %>%
+  select(all_of(vars_cat)) %>%
+  tbl_summary(
+    missing   = "ifany",
+    statistic = all_categorical() ~ "{n} ({p}%)"
+  ) %>%
+  modify_caption("**Résumé des accès & équipements du ménage**") %>%
+  modify_header(label ~ "**Variable**") %>%
+  modify_header(stat_0 ~ "**Effectif (%)**")
+
+```
+
+
+
+## \textcolor{purple}{\textbf{\textit{II. Partie pratique}}}
+
+### \textcolor{pink}{\textbf{\textit{2. Cas d'une enquête individu}}}
+
+* **Chargement et visualisation des données**
+ Il s'agit de la base de données EHCVM Sénégal de 2021.
+
+```{r, warning=FALSE}
+individu <- read_dta("SEN_2021_EHCVM-2_v01_M_STATA14 (2)/ehcvm_individu_sen2021.dta")
+```
+
+Afin de visualiser correcttement la base, il faut transformer les variables catégorielles en facteurs
+
+```{r, warning=FALSE}
+individu <- individu %>%
+  mutate(across(where(is.labelled), ~ as_factor(.)))
+```
+
+On présente à présent quelques observations et quelles variables de notre base.
+
+```{r, warning=FALSE}
+apercu <- individu %>%
+  slice_head(n = 10) %>%
+  select(1:10) %>%
+  tbl_df()
+apercu
+```
+
+## \textcolor{purple}{\textbf{\textit{II. Partie pratique}}}
+
+### \textcolor{pink}{\textbf{\textit{2. Cas d'une enquête individu}}}
+
+* **Traitement des doublons**
+
+```{r, warning=FALSE}
+n_doublons <- sum(duplicated(individu))
+cat("La base contient", n_doublons, "doublon.")
+```
+On peut donc passer à l'étape suivante.
+
+* **Traitement des valeurs manquantes**
+
+Affichons tout d'abord le svariables qui contiennent des valeurs manquantes avec le nombre et le taux de valeurs manquantes :
+
+## \textcolor{purple}{\textbf{\textit{II. Partie pratique}}}
+
+### \textcolor{pink}{\textbf{\textit{2. Cas d'une enquête individu}}}
+
+```{r}
+na_summary <- individu %>%
+  summarise(across(everything(), ~ sum(is.na(.)))) %>%
+  pivot_longer(everything(), names_to = "variable", values_to = "nb_na") %>%
+  filter(nb_na > 0) %>%
+  mutate(
+    total = nrow(individu),
+    pourcentage = round(100 * nb_na / total, 1),
+    label = map_chr(variable, ~ as.character(var_label(individu[[.x]])))
+  ) %>%
+  select(variable, label, nb_na, pourcentage)
+
+# 3. Mise en forme avec gtsummary
+na_summary %>%
+  rename(
+    `Nom de la variable` = variable,
+    `Libellé` = label,
+    `Nombre de NA` = nb_na,
+    `% de NA` = pourcentage
+  ) %>%
+  gt::gt() %>%
+  gt::tab_header(
+    title = "Résumé des valeurs manquantes") %>%
+  gt::fmt_number(
+    columns = `% de NA`,
+    decimals = 3,
+    suffixing = TRUE
+  ) %>%
+  gt::cols_align(
+    align = "center",
+    columns = everything()
+  )
+```
+
+
+## \textcolor{purple}{\textbf{\textit{II. Partie pratique}}}
+
+### \textcolor{pink}{\textbf{\textit{2. Cas d'une enquête individu}}}
+
+* **Traitement des valeurs manquantes**: on se rend compte que les variables qui affichent plus de 5% de NA sont des variables qui ont des auts. L'impuation des valeurs manquantes ne va donc considerer que les variables qui ont moins de 5% des NA.
+Il s'agit des variables **mstat**, **religion**, **ethnie** et **nation**.
+
+  - **Variable mstat (situation de famille)** : affichons les 16 observations qui présentent des valeurs manquantes à la variable mstat :
+
+```{r}
+# Afficher les lignes où la variable mstat est NA
+individu_na <- individu %>%
+  filter(is.na(mstat))
+head(individu_na)
+```
+
+## \textcolor{purple}{\textbf{\textit{II. Partie pratique}}}
+
+### \textcolor{pink}{\textbf{\textit{2. Cas d'une enquête individu}}}
+
+* **Traitement des valeurs manquantes**
+  - **Variable mstat (situation de famille)** : en observant ces 16 observations, on se rend compte qu'il ya des incohérences dans la base : on remarque que ces variables ont presque tous les mêmes modalités aux variables age et agemar. La conclusion qui a été faite est que les deux variables ont certainement été confondues. Pour imputer ces observations, nous avons donc attribué à tous ceux qui avaient moins de 15 ans l'observation "Célibataire" pour la variable mstat, et NA pour la variable agemar.
+
+```{r}
+# Modifier la base avec les règles spécifiées
+individu <- individu %>%
+  mutate(
+    mstat = case_when(
+      age < 15 & is.na(mstat) ~ "Célibataire",
+      TRUE ~ mstat
+    ),
+    agemar = case_when(
+      age < 15 ~ NA_real_,
+      TRUE ~ agemar))
+```
+
+```{r}
+# 1. Créer les classes d’âge
+individu <- individu %>%
+  mutate(classe_age = case_when(
+    age < 15 ~ "<15 ans",
+    age >= 15 & age <= 24 ~ "15-24 ans",
+    age >= 25 & age <= 49 ~ "25-49 ans",
+    age >= 50 ~ "50+ ans",
+    TRUE ~ NA_character_
+  ))
+
+# 2. Créer une table des modes de mstat par combinaison
+mode_table <- individu %>%
+  filter(!is.na(mstat)) %>%
+  group_by(classe_age, lien) %>%
+  summarise(
+    mode_mstat = mfv(mstat)[1],  # on prend le mode (le plus fréquent)
+    .groups = "drop"
+  )
+
+# 3. Joindre les modes à la base originale
+individu <- individu %>%
+  left_join(mode_table, by = c("classe_age", "lien")) %>%
+  mutate(
+    mstat = if_else(is.na(mstat), mode_mstat, mstat)  # imputer si NA
+  ) %>%
+  select(-mode_mstat)  # enlever la variable temporaire
+```
+
+## \textcolor{purple}{\textbf{\textit{II. Partie pratique}}}
+
+### \textcolor{pink}{\textbf{\textit{2. Cas d'une enquête individu}}}
+
+* **Traitement des valeurs manquantes**
+  - **Variable mstat (situation de famille)**
+
+Pour les autres valeurs manquantes, nous allons imputer en utilisant une méthode d'imputation conditionnelle. Avec les variables classe d'age que nous allons créer et lien de parenté. Le mode sera imputé aux valeurs manquantes de la variable mstat. On vérfie ensuite qu'il n'y a plus de valeurs manquantes pour la variable mstat :
+
+```{r}
+cat("valeurs manquantes :", sum(is.na(individu$mstat)))
+```
+
+## \textcolor{purple}{\textbf{\textit{II. Partie pratique}}}
+
+### \textcolor{pink}{\textbf{\textit{2. Cas d'une enquête individu}}}
+
+* **Traitement des valeurs manquantes**
+  - **Variable religion** : on a 742 obsevations qui présentent une valeur manquante pour la variable religion. Pour traiter ces valeurs manquantes, on va faire une imputation conditionnelle en utilisant la variable ménage (numéro du ménage), et en attribuant à chaque valeur manquante le mode de la variable region du groupe dans lequel il se trouve avec la variable ménage. On s'assure qu'il n'ya plus de valeurs manquante pour cette variable.
+
+```{r}
+# 1. Créer une table des modes de la religion par ménage
+religion_mode_par_menage <- individu %>%
+  filter(!is.na(religion)) %>%
+  group_by(menage) %>%
+  summarise(
+    mode_religion = mfv(religion)[1],
+    .groups = "drop"
+  )
+
+# 2. Joindre les modes à la base principale
+individu <- individu %>%
+  left_join(religion_mode_par_menage, by = "menage") %>%
+  mutate(
+    religion = if_else(is.na(religion), mode_religion, religion)
+  ) %>%
+  select(-mode_religion)  # nettoyer la colonne temporaire
+```
+
+```{r}
+cat("valeurs manquantes :", sum(is.na(individu$religion)))
+```
+
+  La même procédure a été appliquée pour les variables **ethnies** et **nation**.
+
+```{r}
+# 1. Créer une table des modes de la religion par ménage
+ethnie_mode_par_menage <- individu %>%
+  filter(!is.na(ethnie)) %>%
+  group_by(menage) %>%
+  summarise(
+    mode_ethnie = mfv(ethnie)[1],
+    .groups = "drop"
+  )
+
+# 2. Joindre les modes à la base principale
+individu <- individu %>%
+  left_join(ethnie_mode_par_menage, by = "menage") %>%
+  mutate(
+    ethnie = if_else(is.na(ethnie), mode_ethnie, ethnie)
+  ) %>%
+  select(-mode_ethnie)  # nettoyer la colonne temporaire
+```
+
+```{r}
+cat("valeurs manquantes :", sum(is.na(individu$ethnie)))
+```
+
+```{r}
+# 1. Créer une table des modes de la religion par ménage
+nation_mode_par_menage <- individu %>%
+  filter(!is.na(nation)) %>%
+  group_by(menage) %>%
+  summarise(
+    mode_nation = mfv(nation)[1],
+    .groups = "drop"
+  )
+
+# 2. Joindre les modes à la base principale
+individu <- individu %>%
+  left_join(nation_mode_par_menage, by = "menage") %>%
+  mutate(
+    nation = if_else(is.na(nation), mode_nation, nation)
+  ) %>%
+  select(-mode_nation)  # nettoyer la colonne temporaire
+```
+
+```{r}
+cat("valeurs manquantes :", sum(is.na(individu$nation)))
+```
+
+
+## \textcolor{purple}{\textbf{\textit{II. Partie pratique}}}
+
+### \textcolor{pink}{\textbf{\textit{2. Cas d'une enquête individu}}}
+
+* **Traitment des valeurs aberrantes** : commençons par lister toutes les variables numériques de la base :
+
+```{r}
+vars_numeriques <- individu %>%
+  select(where(is.numeric)) %>%
+  names()
+vars_numeriques
+```
+
+Les variables qui nous interressent sont: **age, agemar, volhor, salaire, volhor_sec** et **salaire_sec**.
+
+## \textcolor{purple}{\textbf{\textit{II. Partie pratique}}}
+
+### \textcolor{pink}{\textbf{\textit{2. Cas d'une enquête individu}}}
+
+```{r}
+# 1. Résumé principal
+table_age <- individu %>%
+  select(age) %>%
+  tbl_summary(
+    type = list(age = "continuous2"),
+    statistic = list(
+      age ~ c(
+        "Moyenne = {mean}",
+        "Écart-type = {sd}",
+        "Médiane = {median}",
+        "Min = {min}",
+        "Q1 = {p25}",
+        "Q3 = {p75}",
+        "Max = {max}"
+      )
+    ),
+    digits = all_continuous() ~ 1
+  ) %>%
+  modify_header(label ~ "**Statistique**") %>%
+  modify_caption("**Résumé statistique de la variable `age`**")
+table_age
+```
+
+
+## \textcolor{purple}{\textbf{\textit{II. Partie pratique}}}
+
+### \textcolor{pink}{\textbf{\textit{2. Cas d'une enquête individu}}}
+
+* **Traitment des valeurs aberrantes**
+  - **Variables age et agemar** : la plage d'âge est de 0 à 108 ans, ce qui semble normal On conclu que la variable âge ne comporte aucune variable abérrante.
+  Le même procédé a été appliqué pour la variable agemar.
+  
+## \textcolor{purple}{\textbf{\textit{II. Partie pratique}}}
+
+### \textcolor{pink}{\textbf{\textit{2. Cas d'une enquête individu}}}
+
+```{r}
+# 1. Résumé principal
+table_volhor <- individu %>%
+  select(volhor) %>%
+  tbl_summary(
+    type = list(volhor = "continuous2"),
+    statistic = list(
+      volhor ~ c(
+        "Moyenne = {mean}",
+        "Écart-type = {sd}",
+        "Médiane = {median}",
+        "Min = {min}",
+        "Q1 = {p25}",
+        "Q3 = {p75}",
+        "Max = {max}"
+      )
+    ),
+    digits = all_continuous() ~ 1
+  ) %>%
+  modify_header(label ~ "**Statistique**") %>%
+  modify_caption("**Résumé statistique de la variable `horaire travail emplois principal`**")
+table_volhor
+```
+
+## \textcolor{purple}{\textbf{\textit{II. Partie pratique}}}
+
+### \textcolor{pink}{\textbf{\textit{2. Cas d'une enquête individu}}}
+
+* **Traitment des valeurs aberrantes**
+  - **Variable volhor (horaire annuel travail emplois principal)** : le maximum d'heures de travail est 4200 heures par an, soit environ 11 heures et demi par jour de travail, ce qui semble plutôt logique. Poursuivons l'analyse avec un boxplot :
+
+## \textcolor{purple}{\textbf{\textit{II. Partie pratique}}}
+
+### \textcolor{pink}{\textbf{\textit{2. Cas d'une enquête individu}}}
+
+```{r, fig.width=5, fig.height=2}
+# Boxplot de la variable age sans les NA
+individu %>%
+  filter(!is.na(volhor)) %>%
+  ggplot(aes(y = volhor)) +
+  geom_boxplot(fill = "pink", color = "black") +
+  labs(
+    title = "Boxplot de la variable horaire annuel travail emplois principal",
+    y = "Âge premier mariage"
+  ) +
+  theme_minimal()
+
+```
+Le boxplot ne détecte aucune valeur aberrante. On peut donc passer à la variable suivante.
+ 
+
+## \textcolor{purple}{\textbf{\textit{II. Partie pratique}}}
+
+### \textcolor{pink}{\textbf{\textit{2. Cas d'une enquête individu}}}
+
+```{r}
+# 1. Résumé principal
+table_salaire <- individu %>%
+  select(salaire) %>%
+  tbl_summary(
+    type = list(salaire = "continuous2"),
+    statistic = list(
+      salaire ~ c(
+        "Moyenne = {mean}",
+        "Écart-type = {sd}",
+        "Médiane = {median}",
+        "Min = {min}",
+        "Q1 = {p25}",
+        "Q3 = {p75}",
+        "Max = {max}"
+      )
+    ),
+    digits = all_continuous() ~ 1
+  ) %>%
+  modify_header(label ~ "**Statistique**") %>%
+  modify_caption("**Résumé statistique de la variable `salaire annuel emplois principal`**")
+table_salaire
+```
+
+## \textcolor{purple}{\textbf{\textit{II. Partie pratique}}}
+
+### \textcolor{pink}{\textbf{\textit{2. Cas d'une enquête individu}}}
+
+* **Traitment des valeurs aberrantes**
+  - **Variable salaire** : pour visualiser les éventuelles valeurs aberrantes, nous allons afficher les boxplots de la variable salaire par branche d'activité.
+
+
+```{r, fig.width=5, fig.height=2}
+df_clean <- subset(individu, !is.na(salaire) & !is.na(branch))
+
+ggplot(df_clean, aes(x = branch, y = salaire)) +
+  geom_boxplot(fill = "pink") +
+  labs(title = "Salaire par branch", x = "Branch", y = "Salaire") +
+  theme_minimal()
+```
+
+
+## \textcolor{purple}{\textbf{\textit{II. Partie pratique}}}
+
+### \textcolor{pink}{\textbf{\textit{2. Cas d'une enquête individu}}}
+
+* **Traitment des valeurs aberrantes**
+  - **Variable salaire** : nous allons imputer les valeurs manquantes par la méthode de la **winsorisation**, et par catégorie de barnche d'activité.
+
+```{r}
+# Fonction de winsorisation (trim par défaut à 5 %)
+winsoriser <- function(x, p = 0.05) {
+  # calcul des bornes inférieure et supérieure
+  qs <- quantile(x, probs = c(p, 1 - p), na.rm = TRUE, names = FALSE)
+  # on remplace les valeurs inférieures/supérieures aux bornes
+  x_w <- ifelse(
+    is.na(x), 
+    NA_real_, 
+    pmin(pmax(x, qs[1]), qs[2])
+  )
+  return(x_w)
+}
+
+# Application de la winsorisation du salaire par groupe de branch
+individu <- individu %>%
+  # on peut filtrer les NA de branch pour éviter les groupes vides
+  filter(!is.na(branch)) %>%
+  group_by(branch) %>%
+  mutate(
+    salaire = winsoriser(salaire, p = 0.05)
+  ) %>%
+  ungroup()
+
+```
+
+Voici les nouveaux boxplots après traitement des valeurs aberrantes :
+
+```{r, fig.width=5, fig.height=2}
+df <- subset(individu, !is.na(salaire) & !is.na(branch))
+
+ggplot(df, aes(x = branch, y = salaire)) +
+  geom_boxplot(fill = "pink") +
+  labs(title = "Salaire par branch", x = "Branch", y = "Salaire") +
+  theme_minimal()
+```
+
+## \textcolor{purple}{\textbf{\textit{II. Partie pratique}}}
+
+### \textcolor{pink}{\textbf{\textit{2. Cas d'une enquête individu}}}
+
+* **Traitment des valeurs aberrantes**
+  - **Variable salaire** : On se rend compte que les valeurs extrêmes ont disparues. La même procédure sera suivie pour les variables **volhor_sec** et **salaire_sec**.
+  
+## \textcolor{purple}{\textbf{\textit{II. Partie pratique}}}
+
+### \textcolor{pink}{\textbf{\textit{2. Cas d'une enquête individu}}}
+
+* **Statistiques descriptives**
+
+```{r}
+vars_cat <- c("religion", "handit", "alfa")
+individu %>%
+  select(all_of(vars_cat)) %>%
+  tbl_summary(
+    missing   = "ifany",
+    statistic = all_categorical() ~ "{n} ({p}%)"
+  ) %>%
+  modify_caption("Résumé des variables catégorielles : religion, handit, alfa") %>%
+  modify_header(label ~ "**Variable**") %>%
+  modify_header(stat_0 ~ "**Effectif (%)**")
+
+```
+
+## \textcolor{purple}{\textbf{\textit{II. Partie pratique}}}
+
+### \textcolor{pink}{\textbf{\textit{2. Cas d'une enquête individu}}}
+
+```{r, fig.width=5, fig.height=2}
+df_milieu <- individu %>%
+  filter(!is.na(milieu)) %>%
+  count(milieu) %>%
+  mutate(
+    pct = n / sum(n),
+    lbl = paste0(milieu, " (", percent(pct, accuracy = 1), ")")
+  )
+
+ggplot(df_milieu, aes(x = "", y = pct, fill = milieu)) +
+  geom_col(width = 1, color = "white") +
+  coord_polar(theta = "y") +
+  geom_text(aes(label = lbl), position = position_stack(vjust = 0.5)) +
+  labs(
+    title = "Répartition du milieu de résidence",
+    fill  = "Milieu"
+  ) +
+  theme_void() +
+  theme(plot.title = element_text(hjust = 0.5, face = "bold"))
+
+```
+
+## \textcolor{purple}{\textbf{\textit{II. Partie pratique}}}
+
+### \textcolor{pink}{\textbf{\textit{2. Cas d'une enquête individu}}}
+
+```{r, fig.width=5, fig.height=2}
+# Pie chart pour 'sexe'
+df_sexe <- individu %>%
+  filter(!is.na(sexe)) %>%
+  count(sexe) %>%
+  mutate(
+    pct = n / sum(n),
+    lbl = paste0(sexe, " (", percent(pct, accuracy = 1), ")")
+  )
+
+ggplot(df_sexe, aes(x = "", y = pct, fill = sexe)) +
+  geom_col(width = 1, color = "white") +
+  coord_polar(theta = "y") +
+  geom_text(aes(label = lbl), position = position_stack(vjust = 0.5)) +
+  labs(
+    title = "Répartition par sexe",
+    fill  = "Sexe"
+  ) +
+  theme_void() +
+  theme(plot.title = element_text(hjust = 0.5, face = "bold"))
+```
+
+## \textcolor{purple}{\textbf{\textit{II. Partie pratique}}}
+
+### \textcolor{pink}{\textbf{\textit{2. Cas d'une enquête individu}}}
+
+```{r, fig.width=4, fig.height=2}
+individu %>%
+  filter(!is.na(mstat)) %>%
+  count(mstat) %>%
+  ggplot(aes(x = mstat, y = n, fill = mstat)) +
+    geom_col(show.legend = FALSE) +
+    labs(
+      title = "Distribution du statut marital (mstat)",
+      x     = "Statut marital",
+      y     = "Effectif"
+    ) +
+    theme_minimal() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+
+## \textcolor{purple}{\textbf{\textit{II. Partie pratique}}}
+
+### \textcolor{pink}{\textbf{\textit{2. Cas d'une enquête individu}}}
+
+```{r, fig.width=5, fig.height=2}
+# 4. Histogramme de 'age'
+individu %>%
+  filter(!is.na(age)) %>%
+  ggplot(aes(x = age)) +
+    geom_histogram(bins = 30, color = "black", fill = NA) +
+    labs(
+      title = "Histogramme de l'âge",
+      x     = "Âge",
+      y     = "Effectif"
+    ) +
+    theme_minimal()
+```
+
+## \textcolor{purple}{\textbf{\textit{III. Automatisation du traitement d'une base de données}}}
+
+Une application a été conçue sur R shiny pour automatiser le traitement des bases de données.
+
+[Ouvrir la Plateforme de traitements d’enquêtes](https://celinannc.shinyapps.io/Plateforme_traitements_enquetes/)
+

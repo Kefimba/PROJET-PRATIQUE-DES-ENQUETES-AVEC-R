@@ -89,7 +89,7 @@ knitr::opts_chunk$set(
 #Librairies:
 # Installer les packages nécessaires s'ils ne sont pas déjà installés
 packages <- c("haven", "dplyr", "gtsummary", "tidyr", "labelled",
-              "purrr", "gt", "modeest", "ggplot2")
+              "purrr", "gt", "modeest", "ggplot2", "scales")
 
 install_if_missing <- function(pkg) {
   if (!requireNamespace(pkg, quietly = TRUE)) {
@@ -109,6 +109,7 @@ library(purrr)
 library(gt)
 library(modeest)
 library(ggplot2)
+library(scales)
 ```
 
 
@@ -233,7 +234,7 @@ L’unité statistique désigne l’entité sur laquelle les observations sont e
 
 * **Enquête ménage** : l’unité est le ménage, défini comme un groupe de personnes vivant sous le même toit et partageant les ressources. C'est par exemple le cas des enquêtes sur les conditions de vie, les revenus et dépenses, ou encore le logement. Ces enquêtes permettent d'analyser les conditions économiques, sociales et démographiques des ménages.
 
-* **Enquête individuelle** : ici, chaque individu constitue une unité statistique distincte. C'est par exemple le cas d'enquêtes démographiques et de santé (comme les EDS), enquêtes d’opinion, ou sur les comportements de consommation. Elles permettent de recueillir des données personnelles (santé, opinions, comportements, etc.).
+* **Enquête individuelle** : ici, chaque individu constitue une unité statistique distincte. C'est par exemple le cas d'enquêtes démographiques et de santé (EDS), enquêtes d’opinion, ou sur les comportements de consommation. Elles permettent de recueillir des données personnelles (santé, opinions, comportements, etc.).
 
 * **Enquête sur l’entreprise** : l’unité statistique est l’entreprise ou la structure économique. C'est le cas des enquêtes sur la production industrielle, les pratiques de gestion, ou les conditions de travail. Elles servent à comprendre la structure, les performances et les caractéristiques économiques des entreprises.
 
@@ -270,7 +271,7 @@ Ces variables fournissent un portrait de base des répondants et sont indispensa
 $$
 $$
 Elles décrivent l’environnement socio‑économique et les conditions de vie des répondants.
-C'est ici que l'on retroive le **milieu de résidence**, (urbain/rural), **l'accès à l’eau, à l’électricité, à l’éducation et à la santé, activité principale, etc.**
+C'est ici que l'on retrouve le **milieu de résidence**, (urbain/rural), **l'accès à l’eau, à l’électricité, à l’éducation et à la santé, activité principale, etc.**
 
 On distingue également les variables spécifiques au thème de l'enquête et les variables permettant d'évaluer la qualité des données (temps de réponse, ...).
 
@@ -298,8 +299,8 @@ Une fois l'enquête terminée, son appurage à froid peut commencer.
 
 ### 2. Visualisation de la base
 
-La première étape d'importer et de visualiser la base dans l'environnement R. Pour ce faire, les librairies **haven**, **readr** ou **readxl** peuvent être utilisées.
-La visualisation de la base peut également necessiter la quelques graphiques ou tableaux. Pour ce faire, les libriries **ggplot2** et **gtsummary** peuvent être utilisées.
+La première étape est d'importer et de visualiser la base dans l'environnement R. Pour ce faire, les librairies **haven**, **readr** ou **readxl** peuvent être utilisées.
+La visualisation de la base peut également necessiter quelques graphiques ou tableaux. Dans ce cas, les libriries **ggplot2** et **gtsummary** peuvent être utilisées.
 
 ### 3. Traitement des doublons
 
@@ -328,9 +329,9 @@ Voici quelques méthodes de traitement des valeurs manquantes :
 
 * **Suppression** : supprimer les lignes ou colonnes contenant trop de valeurs manquantes (si la proportion est faible). Il faut faire attention à ne pas biaiser l’analyse si les données ne sont pas MCAR.
 
-* **Imputation simple** : cette méthode consiste à remplacer les valeurs manquantes par la moyenne, la médianne (plus robuste aux valeurs extrêmes ou une valeur constante.
+* **Imputation simple** : cette méthode consiste à remplacer les valeurs manquantes par la moyenne ou la médianne (plus robuste aux valeurs extrêmes) ou encore une valeur constante.
 
-* **Imputation conditionnelle** : c'est une sorte d'amélioration de l'imputation simple. On impute toujours la moyenne ou la médianne, mais en faisant des regroupement par variable catégorielle (sexe, région).
+* **Imputation conditionnelle** : c'est une sorte d'amélioration de l'imputation simple. On impute toujours par la moyenne ou la médianne, mais en faisant des regroupements par variable catégorielle (sexe, région).
 
 * **Régression** : cette méthode permet de prédire la variable manquante à partir d’autres variables (modèle linéaire).
 
@@ -340,11 +341,11 @@ On distingue également des méthodes plus avancées comme la méthode des **k-N
 $$
 $$
 
-les méthodes d'imputayion les plus utilisées pour les variables catégorielles sont :
+les méthodes d'imputation les plus utilisées pour les variables catégorielles sont :
 
 * **Suppression** : comme précédemment, on peut proceder à la suppression si la proportion est faible ou si la catégorie n'est pas cruciale.
 
-* **Imputation simple** : cette méthode consiste à remplacer par les valeurs manquantes par la **modalité la plus fréquente** (mode) ou une valeur spéciale (comme "Inconnu", "Non répondu") pour garder la trace du manquant.
+* **Imputation simple** : cette méthode consiste à remplacer par les valeurs manquantes, par la **modalité la plus fréquente** (mode) ou une valeur spéciale (comme "Inconnu", "Non répondu") pour garder la trace du manquant.
 
 * **Imputation conditionnelle** : Il s'agit de regrouper les observations par d'autres variables catégorielles comme sexe ou zone géographique avant de calculer le mode et de proceder à l'imputation.
 
@@ -358,7 +359,7 @@ Voici quelques méthodes d'imputation pour ce type de variable :
 
 * **Suppression ou remplacement par une chaîne vide** (`""`) si la variable est peu informative.
 
-* **Création d’une modalité "Manquant"** ou "Non précisé".
+* **Création d’une modalité** *"Manquant"* ou *"Non précisé"*.
 
 * **Imputation par des règles logiques ou NLP** (traitement automatique du langage) : comme une extraction de texte similaire à partir d’autres champs ou une classification sémantique si le texte a des structures régulières (ex : intitulé de métier, nom de commune).
 
@@ -366,11 +367,11 @@ Le choix de la méthode d'imputation dépend non seulement du type de la variabl
 
 Il est important d’**analyser les motifs de manquants** avant toute imputation pour ne pas introduire de biais.
 
-Une autre chose à noter est que toutes les valeurs manquantes ne sont pas à imputer, par exemple, un enfant de 6 ans qui présente NA à la variable emplois n'est pas une valeur manquante. Imputer cette valeur reviendrait à fausser complètement la base de données. Enfin, le meilleur de traiter une valeur est autant que possible chercher à avoir accès aux réelles données.
+Une autre chose à noter est que toutes les valeurs manquantes ne sont pas à imputer, par exemple, un enfant de 6 ans qui présente NA à la variable emplois n'est pas une valeur manquante. Imputer cette valeur reviendrait à fausser complètement la base de données. Enfin, le meilleur moyen de traiter une valeur manquante est autant que possible chercher à avoir accès aux données réelles.
 
 ### 5. Traitement des valeurs aberrantes
 
-Dans toute étude quantitative, les valeurs aberrantes (outliers) sont des observations extrêmes qui divergent sensiblement de la tendance générale des données. Leur présence peut biaiser les estimations statistiques, fausser les modèles et conduire à des conclusions erronées. Le traitement approprié des valeurs aberrantes est donc essentiel pour garantir la fiabilité des analyses.
+Les valeurs aberrantes (outliers) sont des observations extrêmes qui divergent sensiblement de la tendance générale des données. Leur présence peut biaiser les estimations statistiques, fausser les modèles et conduire à des conclusions erronées. Le traitement approprié des valeurs aberrantes est donc essentiel pour garantir la fiabilité des analyses.
 
 **Une valeur aberrante** se définit comme une observation dont la distance à la distribution centrale dépasse significativement celle des autres points. Elle peut être légitime (phénomène rare) ou erronée (erreur de saisie, de mesure, etc.). Elle peut être causée par des erreurs humaines (saisie, codage), des problèmes techniques (capteurs défaillants) ou des caractéristiques intrinsèques de la population (phénomènes extrêmes).
 
@@ -569,6 +570,52 @@ ggplot(menage_long, aes(x = variable, y = valeur, fill = variable)) +
 
 
 Comme on le voit sur les boxplots, ces variables sont toutes spécifiques au ménage. Les traiter pourrait biaiser les donner et faire perdre les informations.
+
+### 5. Statistiques descriptives
+
+Voici un petit résumé de l'accès et équipements des ménages enquêtés :
+
+```{r}
+# 1. Définir les variables catégorielles
+vars_cat <- c("elec_ac", "toilet",
+              "tv", "fer", "frigo", "cuisin", "ordin", "decod", "car")
+
+# 2. Tableau récapitulatif avec gtsummary
+menage %>%
+  select(all_of(vars_cat)) %>%
+  tbl_summary(
+    missing   = "ifany",
+    statistic = all_categorical() ~ "{n} ({p}%)"
+  ) %>%
+  modify_caption("**Résumé des accès & équipements du ménage**") %>%
+  modify_header(label ~ "**Variable**") %>%
+  modify_header(stat_0 ~ "**Effectif (%)**")
+
+```
+
+\newpage
+
+```{r}
+# Préparation des données : compter les modalités et calculer les pourcentages
+pie_data <- menage %>%
+  filter(!is.na(elec_ac)) %>%
+  count(elec_ac) %>%
+  mutate(
+    pourcentage = round(100 * n / sum(n), 1),
+    label = paste0(elec_ac, " (", pourcentage, "%)")
+  )
+
+# Affichage du pie chart
+ggplot(pie_data, aes(x = "", y = n, fill = elec_ac)) +
+  geom_col(width = 1, color = "white") +
+  coord_polar("y") +
+  theme_void() +
+  geom_text(aes(label = paste0(pourcentage, "%")),
+            position = position_stack(vjust = 0.5), size = 4, color = "white") +
+  labs(title = "Répartition de la variable elec_ac") +
+  scale_fill_brewer(palette = "Pink", name = "Accès à l'électricité")
+
+```
 
 
 \newpage
@@ -823,7 +870,7 @@ Les variables qui nous interressent sont: **age, agemar, volhor, salaire, volhor
 
 * **Variable age**
 
-Une valeur abberrante serait une variable trop forte pour être un âge. Affichons donc un résumé statistique de la variable :
+Une valeur abberrante serait une observation trop forte pour être un âge. Affichons donc un résumé statistique de la variable :
 
 \newpage
 
@@ -1015,22 +1062,101 @@ ggplot(df, aes(x = branch, y = salaire)) +
   theme_minimal()
 ```
 
-```{r}
-individu %>%
-  filter(!is.na(branch), !is.na(salaire)) %>%
-  group_by(branch) %>%
-  summarise(
-    min_salaire = min(salaire),
-    p05         = quantile(salaire, 0.05),
-    p95         = quantile(salaire, 0.95),
-    max_salaire = max(salaire)
-  )
-
-```
-
 On se rend compte que les valeurs extrêmes ont disparues.
 
 La même procédure sera suivie pour les variables **volhor_sec** et **salaire_sec**.
+
+### 6. Statistiques descriptives
+
+```{r}
+vars_cat <- c("religion", "handit", "alfa")
+individu %>%
+  select(all_of(vars_cat)) %>%
+  tbl_summary(
+    missing   = "ifany",
+    statistic = all_categorical() ~ "{n} ({p}%)"
+  ) %>%
+  modify_caption("Résumé des variables catégorielles : religion, handit, alfa") %>%
+  modify_header(label ~ "**Variable**") %>%
+  modify_header(stat_0 ~ "**Effectif (%)**")
+
+```
+
+
+```{r}
+df_milieu <- individu %>%
+  filter(!is.na(milieu)) %>%
+  count(milieu) %>%
+  mutate(
+    pct = n / sum(n),
+    lbl = paste0(milieu, " (", percent(pct, accuracy = 1), ")")
+  )
+
+ggplot(df_milieu, aes(x = "", y = pct, fill = milieu)) +
+  geom_col(width = 1, color = "white") +
+  coord_polar(theta = "y") +
+  geom_text(aes(label = lbl), position = position_stack(vjust = 0.5)) +
+  labs(
+    title = "Répartition du milieu de résidence",
+    fill  = "Milieu"
+  ) +
+  theme_void() +
+  theme(plot.title = element_text(hjust = 0.5, face = "bold"))
+
+```
+
+
+```{r}
+# Pie chart pour 'sexe'
+df_sexe <- individu %>%
+  filter(!is.na(sexe)) %>%
+  count(sexe) %>%
+  mutate(
+    pct = n / sum(n),
+    lbl = paste0(sexe, " (", percent(pct, accuracy = 1), ")")
+  )
+
+ggplot(df_sexe, aes(x = "", y = pct, fill = sexe)) +
+  geom_col(width = 1, color = "white") +
+  coord_polar(theta = "y") +
+  geom_text(aes(label = lbl), position = position_stack(vjust = 0.5)) +
+  labs(
+    title = "Répartition par sexe",
+    fill  = "Sexe"
+  ) +
+  theme_void() +
+  theme(plot.title = element_text(hjust = 0.5, face = "bold"))
+```
+
+```{r}
+individu %>%
+  filter(!is.na(mstat)) %>%
+  count(mstat) %>%
+  ggplot(aes(x = mstat, y = n, fill = mstat)) +
+    geom_col(show.legend = FALSE) +
+    labs(
+      title = "Distribution du statut marital (mstat)",
+      x     = "Statut marital",
+      y     = "Effectif"
+    ) +
+    theme_minimal() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+
+```{r}
+# 4. Histogramme de 'age'
+individu %>%
+  filter(!is.na(age)) %>%
+  ggplot(aes(x = age)) +
+    geom_histogram(bins = 30, color = "black", fill = NA) +
+    labs(
+      title = "Histogramme de l'âge",
+      x     = "Âge",
+      y     = "Effectif"
+    ) +
+    theme_minimal()
+```
 
 
 \newpage
@@ -1041,6 +1167,8 @@ La même procédure sera suivie pour les variables **volhor_sec** et **salaire_s
 
 Une application a été conçue sur R shiny pour essayer d'automatiser le traitement des bases de données.
 
+[Ouvrir la Plateforme de traitements d’enquêtes](https://celinannc.shinyapps.io/Plateforme_traitements_enquetes/)
+
 
 \newpage
 
@@ -1048,4 +1176,4 @@ Une application a été conçue sur R shiny pour essayer d'automatiser le traite
 \section*{Conclusion}
 \addcontentsline{toc}{section}{Conclusion}
 
-En conclusion, l’utilisation de *R* dans le traitement des données d’enquêtes revêt une importance capitale pour les ingénieurs statisticiens économistes formés à l’ENSAE de Dakar. Le logiciel permet de traiter efficacement de grandes quantités de données, de garantir la qualité des résultats et d’assurer une analyse approfondie et rigoureuse. Grâce à ses capacités d’automatisation via *R Shiny, il facilite la gestion des bases de données et réduit les erreurs humaines. Ce travail souligne donc l'impact crucial de **R* dans la statistique appliquée, tout en mettant en évidence son rôle central dans la formation des futurs professionnels du domaine. Ce logiciel devient ainsi un allié indispensable dans le traitement des enquêtes et l’analyse des données en général, apportant efficacité et précision aux analyses statistiques.
+En conclusion, l’utilisation de **R** dans le traitement des données d’enquêtes revêt une importance capitale pour les ingénieurs statisticiens économistes formés à l’ENSAE de Dakar. Le logiciel permet de traiter efficacement de grandes quantités de données, de garantir la qualité des résultats et d’assurer une analyse approfondie et rigoureuse. Grâce à ses capacités d’automatisation via **R Shiny**, il facilite la gestion des bases de données et réduit les erreurs humaines. Ce travail souligne donc l'impact crucial de **R** dans la statistique appliquée, tout en mettant en évidence son rôle central dans la formation des futurs professionnels du domaine. Ce logiciel devient ainsi un allié indispensable dans le traitement des enquêtes et l’analyse des données en général, apportant efficacité et précision aux analyses statistiques.
