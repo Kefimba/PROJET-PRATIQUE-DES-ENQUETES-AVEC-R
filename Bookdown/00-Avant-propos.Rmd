@@ -1,0 +1,10 @@
+# Avant-propos {-}
+
+Les Ingénieurs Statisticiens Economistes (ISE) jouent un rôle essentiel dans la compréhension des dynamiques économiques, sociales et démographiques, et dans l’aide à la prise de décisions. Leur expertise contribue à l’élaboration et à l’évaluation des politiques publiques, ainsi qu’au développement de stratégies économiques efficaces.
+L’Ecole nationale de la Statistique et de l'Analyse économique Pierre Ndiaye (ENSAE) du Sénégal a été créée pour offrir une formation de qualité dans ce domaine. L’accès à l’ENSAE est soumis à un concours rigoureux, ouvert aux étudiants détenteurs du baccalauréat ou d’un diplôme universitaire selon le niveau d’admission. Elle propose deux filières, à savoir :
+
+* **Analystes Statisticiens (AS)** : une formation de trois ans qui forme des analystes en statistique capables de traiter et d’analyser des données à des fins variées.
+
+* **Ingénieurs Statisticiens Économistes (ISE)** : un cycle court de trois ans ou un cycle long de cinq ans, offrant une formation approfondie pour devenir des cadres spécialisés dans l’analyse statistique et économique.
+
+Dans le cadre de leur formation, les étudiants de l’ENSAE sont amenés à se familiariser avec de nombreux logiciels et outils indispensables à leur futur métier. C’est dans cette optique qu’intervient le cours de **projet statistique avec R**, dont l’objectif est de renforcer leur maîtrise de l’outil **R**. C’est précisément dans le cadre de ce cours que s’inscrit le présent exposé, intitulé **Pratique d’enquête avec R**_*Traitement à froid*. À travers cette présentation, nous nous intéressons au traitement et à l’analyse de données issues d’enquêtes.

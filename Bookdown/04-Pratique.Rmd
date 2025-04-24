@@ -1,0 +1,694 @@
+# Chapitre 2 : Partie Pratique {-}
+
+Tout au long de ce chapitre, nous utiliserons deux bases issues de l'**EHCVM** (Enquête Harmonisée sur les Conditions de Vie des Ménages) menée au Sénégal en 2021. Cette enquête s’inscrit dans un cadre d’harmonisation des statistiques de la pauvreté et des conditions de vie afin d’améliorer l’élaboration et l’évaluation des politiques publiques.
+
+
+## I. Cas d'une enquête ménage {-}
+
+La base utilisée est la base ménage EHCVM Sénégal 2021.
+
+### 1. Chargement et visualisation des données {-}
+
+La première étape pour traiter une base est de la charger.
+
+```{r base_m}
+menage <- read_dta("SEN_2021_EHCVM-2_v01_M_STATA14 (2)/ehcvm_menage_sen2021.dta")
+```
+
+Afin de visualiser correcttement la base, il faut transformer les variables catégorielles en facteurs
+
+```{r factor_m}
+menage <- menage %>%
+  mutate(across(where(is.labelled), ~ as_factor(.)))
+```
+
+Voici un aperçu de la base :
+
+
+```{r visualisation_m}
+head(menage) %>% 
+  gt() %>%
+  tab_header(title = "Premières observations de la base")
+```
+
+### 2. Traitement des doublons {-}
+
+Determinons le nombre de doublons que contient notre base :
+
+```{r doubons_m}
+n_doublons <- sum(duplicated(menage))
+cat("La base contient", n_doublons, "doublon.")
+```
+On peut donc passer à l'étape suivante.
+
+
+### 3. Traitement des valeurs manquantes {-}
+
+Pour traiter les valeurs manquantes, affichons tout d'abord les variables qui contiennent des valeurs manquantes avec le nombre et le taux de valeurs manquantes :
+
+```{r na_m}
+na_summary <- menage %>%
+  summarise(across(everything(), ~ sum(is.na(.)))) %>%
+  pivot_longer(everything(), names_to = "variable", values_to = "nb_na") %>%
+  filter(nb_na > 0) %>%
+  mutate(
+    total = nrow(menage),
+    pourcentage = round(100 * nb_na / total, 1),
+    label = map_chr(variable, ~ as.character(var_label(menage[[.x]])))
+  ) %>%
+  select(variable, label, nb_na, pourcentage)
+
+
+na_summary %>%
+  rename(
+    `Nom de la variable` = variable,
+    `Libellé` = label,
+    `Nombre de NA` = nb_na,
+    `% de NA` = pourcentage
+  ) %>%
+  gt::gt() %>%
+  gt::tab_header(
+    title = "Résumé des valeurs manquantes") %>%
+  gt::fmt_number(
+    columns = `% de NA`,
+    decimals = 3,
+    suffixing = TRUE
+  ) %>%
+  gt::cols_align(
+    align = "center",
+    columns = everything()
+  )
+```
+
+La seule variable qui comporte des valeurs manquantes est la variable superf. Mais son taux de NA est beaucoup trop grand pour imputer sans biaiser les données. Il s'agit d'une variable où il doit y avoir des NA, du fait que tous les ménages ne possèdent pas de superficie agricole. 
+
+### 4. Traitment des valeurs aberrantes {-}
+
+Une fois les valeurs manquantes traitées, traitons à présent les valeurs abérrantes.
+
+Commençons par lister toutes les variables numériques de la base :
+
+```{r aberrantes_m}}
+vars_numeriques <- menage %>%
+  select(where(is.numeric)) %>%
+  names()
+
+tibble(Variables_numeriques = vars_numeriques) %>%
+  gt()
+```
+Les variables qui nous interressent sont **superf, grosrum, petitrum, porc, lapin** et **volail**.
+
+```{r boxplots_m}
+# Restructurer les données en format long
+menage_long <- menage %>%
+  select(superf, grosrum, petitrum, porc, lapin, volail) %>%
+  pivot_longer(cols = everything(), names_to = "variable", values_to = "valeur")
+
+# Affichage des boxplots
+ggplot(menage_long, aes(x = variable, y = valeur, fill = variable)) +
+  geom_boxplot(outlier.color = "black", outlier.shape = 16) +
+  theme_minimal() +
+  scale_fill_brewer(palette = "pink") +  
+  labs(title = "Boxplots", x = "Variable", y = "Valeur") +
+  theme(legend.position = "none")
+
+```
+
+
+Comme on le voit sur les boxplots, ces variables sont toutes spécifiques au ménage. Les traiter pourrait biaiser les donner et faire perdre les informations.
+
+### 5. Statistiques descriptives {-}
+
+Voici un petit résumé de l'accès et équipements des ménages enquêtés :
+
+```{r table_m}}
+vars_cat <- c("elec_ac", "toilet",
+              "tv", "fer", "frigo", "cuisin", "ordin", "decod", "car")
+
+menage %>%
+  select(all_of(vars_cat)) %>%
+  tbl_summary(
+    missing   = "ifany",
+    statistic = all_categorical() ~ "{n} ({p}%)"
+  ) %>%
+  modify_header(label ~ "**Variable**") %>%
+  modify_header(stat_0 ~ "**Effectif (%)**") %>%
+  as_kable(format = "html", booktabs = FALSE) %>%
+  kable_styling(latex_options = c("hold_position"), position = "center")
+```
+
+
+```{r pie_m}
+# Préparation des données : compter les modalités et calculer les pourcentages
+pie_data <- menage %>%
+  filter(!is.na(elec_ac)) %>%
+  count(elec_ac) %>%
+  mutate(
+    pourcentage = round(100 * n / sum(n), 1),
+    label = paste0(elec_ac, " (", pourcentage, "%)")
+  )
+
+# Affichage du pie chart
+ggplot(pie_data, aes(x = "", y = n, fill = elec_ac)) +
+  geom_col(width = 1, color = "white") +
+  coord_polar("y") +
+  theme_void() +
+  geom_text(aes(label = paste0(pourcentage, "%")),
+            position = position_stack(vjust = 0.5), size = 4, color = "white") +
+  labs(title = "Répartition de la variable accès à l'électricité") +
+  scale_fill_brewer(palette = "Pink", name = "Accès à l'électricité")
+
+```
+
+
+## II. Cas d'une enquête individu {-}
+
+
+### 1. Chargement et visualisation des données {-}
+
+On commence par charger la base de données. Il s'agit de la base de données EHCVM Sénégal de 2021 (individu).
+
+```{r base_i}
+individu <- read_dta("SEN_2021_EHCVM-2_v01_M_STATA14 (2)/ehcvm_individu_sen2021.dta")
+```
+
+Afin de visualiser correcttement la base, il faut transformer les variables catégorielles en facteurs
+
+```{r factor_i}
+individu <- individu %>%
+  mutate(across(where(is.labelled), ~ as_factor(.)))
+```
+
+Voici un aperçu de la base chargée :
+
+```{r visualisation_i}
+head(individu) %>% 
+  gt() %>%
+  tab_header(title = "Premières observations de la base")
+```
+
+### 2. Traitement des doublons {-}
+
+Determinons le nombre de doublons que contient notre base :
+
+```{r doublons_i}
+n_doublons <- sum(duplicated(individu))
+cat("La base contient", n_doublons, "doublon.")
+```
+On peut donc passer à l'étape suivante.
+
+### 3. Traitement des valeurs manquantes {-}
+
+Pour traiter les valeurs manquantes, affichons tout d'abord les variables qui contiennent des valeurs manquantes avec le nombre et le taux de valeurs manquantes :
+
+
+```{r na_i}
+na_summary <- individu %>%
+  summarise(across(everything(), ~ sum(is.na(.)))) %>%
+  pivot_longer(everything(), names_to = "variable", values_to = "nb_na") %>%
+  filter(nb_na > 0) %>%
+  mutate(
+    total = nrow(individu),
+    pourcentage = round(100 * nb_na / total, 1),
+    label = map_chr(variable, ~ as.character(var_label(individu[[.x]])))
+  ) %>%
+  select(variable, label, nb_na, pourcentage)
+
+# 3. Mise en forme avec gtsummary
+na_summary %>%
+  rename(
+    `Nom de la variable` = variable,
+    `Libellé` = label,
+    `Nombre de NA` = nb_na,
+    `% de NA` = pourcentage
+  ) %>%
+  gt::gt() %>%
+  gt::tab_header(
+    title = "Résumé des valeurs manquantes") %>%
+  gt::fmt_number(
+    columns = `% de NA`,
+    decimals = 3,
+    suffixing = TRUE
+  ) %>%
+  gt::cols_align(
+    align = "center",
+    columns = everything()
+  )
+```
+
+On se rend compte que les variables qui affichent plus de 5% de NA sont des variables qui ont des sauts. L'impuation des valeurs manquantes ne va donc considerer que les variables qui ont moins de 5% des NA.
+Il s'agit des variables **mstat**, **religion**, **ethnie** et **nation**.
+
+* **Variable mstat (situation de famille)**
+
+Affichons les 16 observations qui présentent des valeurs manquantes à la variable mstat :
+
+```{r mstat_na}
+# Afficher les lignes où la variable mstat est NA
+individu_na <- individu %>%
+  filter(is.na(mstat))
+
+  gt(individu_na)
+```
+
+En observant ces 16 observations, on se rend compte qu'il ya des incohérences dans la base : ces observations ont presque toutes les mêmes modalités aux variables age et agemar. La conclusion qui a été faite est que les deux variables ont certainement été confondues. 
+
+Pour imputer ces observations, nous avons donc attribué à tous ceux qui avaient moins de 15 ans l'observation "Célibataire" pour la variable mstat, et NA pour la variable agemar.
+
+```{r mstat_imputation}
+# Modifier la base avec les règles spécifiées
+individu <- individu %>%
+  mutate(
+    mstat = case_when(
+      age < 15 & is.na(mstat) ~ "Célibataire",
+      TRUE ~ mstat
+    ),
+    agemar = case_when(
+      age < 15 ~ NA_real_,
+      TRUE ~ agemar))
+```
+
+Pour les autres valeurs manquantes, nous allons imputer en utilisant une méthode d'imputation conditionnelle avec les variables classe d'age (que nous allons créer) et lien de parenté. Le mode sera imputé aux valeurs manquantes de la variable mstat.
+
+```{r mstat_imputation_2}
+# 1. Créer les classes d’âge
+individu <- individu %>%
+  mutate(classe_age = case_when(
+    age < 15 ~ "<15 ans",
+    age >= 15 & age <= 24 ~ "15-24 ans",
+    age >= 25 & age <= 49 ~ "25-49 ans",
+    age >= 50 ~ "50+ ans",
+    TRUE ~ NA_character_
+  ))
+
+# 2. Créer une table des modes de mstat par combinaison
+mode_table <- individu %>%
+  filter(!is.na(mstat)) %>%
+  group_by(classe_age, lien) %>%
+  summarise(
+    mode_mstat = mfv(mstat)[1],  # on prend le mode (le plus fréquent)
+    .groups = "drop"
+  )
+
+# 3. Joindre les modes à la base originale
+individu <- individu %>%
+  left_join(mode_table, by = c("classe_age", "lien")) %>%
+  mutate(
+    mstat = if_else(is.na(mstat), mode_mstat, mstat)  # imputer si NA
+  ) %>%
+  select(-mode_mstat)  # enlever la variable temporaire
+```
+
+On vérfie ensuite qu'il n'y a plus de valeurs manquantes pour la variable mstat :
+
+```{r mstat_verif}
+cat("valeurs manquantes :", sum(is.na(individu$mstat)))
+```
+
+* **Variable religion**
+
+On a 742 obsevations qui présentent une valeur manquante pour la variable religion. Pour traiter ces valeurs manquantes, nous allons procéder à une imputation conditionnelle en utilisant la variable ménage (numéro du ménage), et en attribuant à chaque valeur manquante le mode de la variable region du groupe dans lequel il se trouve avec la variable ménage.
+
+```{r religion_na}
+# 1. Créer une table des modes de la religion par ménage
+religion_mode_par_menage <- individu %>%
+  filter(!is.na(religion)) %>%
+  group_by(menage) %>%
+  summarise(
+    mode_religion = mfv(religion)[1],
+    .groups = "drop"
+  )
+
+# 2. Joindre les modes à la base principale
+individu <- individu %>%
+  left_join(religion_mode_par_menage, by = "menage") %>%
+  mutate(
+    religion = if_else(is.na(religion), mode_religion, religion)
+  ) %>%
+  select(-mode_religion)  # nettoyer la colonne temporaire
+```
+
+On s'assure qu'il n'ya plus de valeurs manquante pour cette variable.
+
+```{r religion_verif}
+cat("valeurs manquantes :", sum(is.na(individu$religion)))
+```
+
+* **Variable ethnie**
+
+Là également, il sera question d'imputer les valeurs manquantes de la variable ethnie en la regroupant avec la variable ménage.
+
+```{r ethnie_na}
+# 1. Créer une table des modes de la religion par ménage
+ethnie_mode_par_menage <- individu %>%
+  filter(!is.na(ethnie)) %>%
+  group_by(menage) %>%
+  summarise(
+    mode_ethnie = mfv(ethnie)[1],
+    .groups = "drop"
+  )
+
+# 2. Joindre les modes à la base principale
+individu <- individu %>%
+  left_join(ethnie_mode_par_menage, by = "menage") %>%
+  mutate(
+    ethnie = if_else(is.na(ethnie), mode_ethnie, ethnie)
+  ) %>%
+  select(-mode_ethnie)  # nettoyer la colonne temporaire
+```
+
+Une fois l'imputation terminée, déterminons s'il n'y a plus de valeurs manquante pour cette variable.
+
+```{r ethnie_verif}
+cat("valeurs manquantes :", sum(is.na(individu$ethnie)))
+```
+
+* **Variable nation** 
+
+La même procédure que précédement sera appliquée pour traiter les valeurs manquantes de la variable nation.
+
+```{r nation_na}
+# 1. Créer une table des modes de la religion par ménage
+nation_mode_par_menage <- individu %>%
+  filter(!is.na(nation)) %>%
+  group_by(menage) %>%
+  summarise(
+    mode_nation = mfv(nation)[1],
+    .groups = "drop"
+  )
+
+# 2. Joindre les modes à la base principale
+individu <- individu %>%
+  left_join(nation_mode_par_menage, by = "menage") %>%
+  mutate(
+    nation = if_else(is.na(nation), mode_nation, nation)
+  ) %>%
+  select(-mode_nation)  # nettoyer la colonne temporaire
+```
+
+Une fois l'implémentation terminée, on se rassure qu'il n'y a plus de valeurs manquantes.
+
+```{r nation_verif}
+cat("valeurs manquantes :", sum(is.na(individu$nation)))
+```
+
+### 4. Traitment des valeurs aberrantes {-}
+
+Une fois les valeurs manquantes traitées, traitons à présent les valeurs abérrantes.
+
+Commençons par lister toutes les variables numériques de la base :
+
+```{r aberrantes_i}
+vars_numeriques <- individu %>%
+  select(where(is.numeric)) %>%
+  names()
+
+tibble(Variables_numeriques = vars_numeriques) %>%
+  gt()
+```
+Les variables qui nous interressent sont: **age, agemar, volhor, salaire, volhor_sec** et **salaire_sec**.
+
+
+* **Variable age**
+
+Une valeur abberrante serait une observation trop forte pour être un âge. Affichons donc un résumé statistique de la variable :
+
+
+```{r age_i}
+# 1. Résumé principal
+table_age <- individu %>%
+  select(age) %>%
+  tbl_summary(
+    type = list(age = "continuous2"),
+    statistic = list(
+      age ~ c(
+        "Moyenne = {mean}",
+        "Écart-type = {sd}",
+        "Médiane = {median}",
+        "Min = {min}",
+        "Q1 = {p25}",
+        "Q3 = {p75}",
+        "Max = {max}"
+      )
+    ),
+    digits = all_continuous() ~ 1
+  ) %>%
+  modify_header(label ~ "**Statistique**")
+table_age
+```
+
+La plage d'âge est de 0 à 108 ans, ce qui semble normal On conclut que la variable âge ne comporte aucune variable abérrante.
+
+
+* **Variable agemar (âge premier mariage)**
+
+Le même processus sera appliqué pour cette variable. On a alors le tableau suivant :
+
+```{r agemar_i}
+# 1. Résumé principal
+table_agemar <- individu %>%
+  select(agemar) %>%
+  tbl_summary(
+    type = list(agemar = "continuous2"),
+    statistic = list(
+      agemar ~ c(
+        "Moyenne = {mean}",
+        "Écart-type = {sd}",
+        "Médiane = {median}",
+        "Min = {min}",
+        "Q1 = {p25}",
+        "Q3 = {p75}",
+        "Max = {max}"
+      )
+    ),
+    digits = all_continuous() ~ 1
+  ) %>%
+  modify_header(label ~ "**Statistique**")
+table_agemar
+```
+
+On remarque que la plage d'âge du premier mariage est de 10 à 80 ans. De plus, 25% des répondants à cette question se sont mariés pour la première fois avant 18 ans. Ces informations laissent quelques doutes quant à la véracité de ces informations, d'autant plus que plus haut, le constat avait été fait que les variables age et agemar semblaient avoir été cofondues. 
+
+Toutefois, tenter de d'imputer ces valeurs aberrantes avec des valeurs qui sont sans doutes fausses contribuerait d'avantage à biaiser les données.
+
+* **Variable volhor (horaire annuel travail emplois principal)**
+
+Ici également, nous allons commencer par afficher un résumé statique de la variable :
+
+```{r volhor_i}
+# 1. Résumé principal
+table_volhor <- individu %>%
+  select(volhor) %>%
+  tbl_summary(
+    type = list(volhor = "continuous2"),
+    statistic = list(
+      volhor ~ c(
+        "Moyenne = {mean}",
+        "Écart-type = {sd}",
+        "Médiane = {median}",
+        "Min = {min}",
+        "Q1 = {p25}",
+        "Q3 = {p75}",
+        "Max = {max}"
+      )
+    ),
+    digits = all_continuous() ~ 1
+  ) %>%
+  modify_header(label ~ "**Statistique**")
+table_volhor
+```
+
+Le maximum d'heures de travail est 4200 heures par an, soit environ 11 heures et demi par jour de travail, ce qui semble plutôt logique. Poursuivons l'analyse avec un boxplot :
+
+```{r boxplot_volhor}
+# Boxplot de la variable age sans les NA
+individu %>%
+  filter(!is.na(volhor)) %>%
+  ggplot(aes(y = volhor)) +
+  geom_boxplot(fill = "pink", color = "black") +
+  labs(
+    title = "Boxplot de la variable horaire annuel travail emplois principal",
+    y = "Âge premier mariage"
+  ) +
+  theme_minimal()
+
+```
+
+Le boxplot ne détecte aucune valeur aberrante. On peut donc passer à la variable suivante.
+
+* **Variable salaire** : 
+
+Le même procédé sera suivi pour la variable salaire. Voici un résumé statistique de la variable :
+
+```{r salaire_i}
+# 1. Résumé principal
+table_salaire <- individu %>%
+  select(salaire) %>%
+  tbl_summary(
+    type = list(salaire = "continuous2"),
+    statistic = list(
+      salaire ~ c(
+        "Moyenne = {mean}",
+        "Écart-type = {sd}",
+        "Médiane = {median}",
+        "Min = {min}",
+        "Q1 = {p25}",
+        "Q3 = {p75}",
+        "Max = {max}"
+      )
+    ),
+    digits = all_continuous() ~ 1
+  ) %>%
+  modify_header(label ~ "**Statistique**")
+table_salaire
+```
+
+Pour visualiser les éventuelles valeurs aberrantes, nous allons afficher les boxplots de la variable salaire par branche d'activité.
+
+```{r boxplot_salaire}
+df_clean <- subset(individu, !is.na(salaire) & !is.na(branch))
+
+ggplot(df_clean, aes(x = branch, y = salaire)) +
+  geom_boxplot(fill = "pink") +
+  labs(title = "Salaire par branch", x = "Branch", y = "Salaire") +
+  theme_minimal()+
+ theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+On se rend compte qu'il y a des effectivement des valeurs aberrantes. Bien que cela puisse s'expliquer par la spécifité de la région, pour ne pas que ces valeurs influencent les données et perdre des informations, nous allons imputer les valeurs manquantes par la méthode de la **winsorisation**, et par catégorie de branche d'activité.
+
+```{r imputation_salaire}
+# Fonction de winsorisation (trim par défaut à 5 %)
+winsoriser <- function(x, p = 0.05) {
+  # calcul des bornes inférieure et supérieure
+  qs <- quantile(x, probs = c(p, 1 - p), na.rm = TRUE, names = FALSE)
+  # on remplace les valeurs inférieures/supérieures aux bornes
+  x_w <- ifelse(
+    is.na(x), 
+    NA_real_, 
+    pmin(pmax(x, qs[1]), qs[2])
+  )
+  return(x_w)
+}
+
+# Application de la winsorisation du salaire par groupe de branch
+individu <- individu %>%
+  # on peut filtrer les NA de branch pour éviter les groupes vides
+  filter(!is.na(branch)) %>%
+  group_by(branch) %>%
+  mutate(
+    salaire = winsoriser(salaire, p = 0.05)
+  ) %>%
+  ungroup()
+```
+
+
+Voici les nouveaux boxplots après traitement des valeurs aberrantes :
+
+```{r boxplot_salaire_2}
+df <- subset(individu, !is.na(salaire) & !is.na(branch))
+
+ggplot(df, aes(x = branch, y = salaire)) +
+  geom_boxplot(fill = "pink") +
+  labs(title = "Salaire par branch", x = "Branch", y = "Salaire") +
+  theme_minimal()+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+On se rend compte que les valeurs extrêmes ont disparues.
+
+La même procédure sera suivie pour les variables **volhor_sec** et **salaire_sec**.
+
+### 6. Statistiques descriptives {-}
+
+Voici quelques statistiques descriptives tirées de notre base de données :
+
+```{r var_cat}
+vars_cat <- c("religion", "handit", "alfa")
+individu %>%
+  select(all_of(vars_cat)) %>%
+  tbl_summary(
+    missing   = "ifany",
+    statistic = all_categorical() ~ "{n} ({p}%)"
+  ) %>%
+  modify_header(label ~ "**Variable**") %>%
+  modify_header(stat_0 ~ "**Effectif (%)**")
+
+```
+
+
+```{r pie_milieu}
+df_milieu <- individu %>%
+  filter(!is.na(milieu)) %>%
+  count(milieu) %>%
+  mutate(
+    pct = n / sum(n),
+    lbl = paste0(milieu, " (", percent(pct, accuracy = 1), ")")
+  )
+
+ggplot(df_milieu, aes(x = "", y = pct, fill = milieu)) +
+  geom_col(width = 1, color = "white") +
+  coord_polar(theta = "y") +
+  geom_text(aes(label = lbl), position = position_stack(vjust = 0.5)) +
+  labs(
+    title = "Répartition du milieu de résidence",
+    fill  = "Milieu"
+  ) +
+  theme_void() +
+  theme(plot.title = element_text(hjust = 0.5, face = "bold"))
+
+```
+
+
+```{r pie_sex}
+# Pie chart pour 'sexe'
+df_sexe <- individu %>%
+  filter(!is.na(sexe)) %>%
+  count(sexe) %>%
+  mutate(
+    pct = n / sum(n),
+    lbl = paste0(sexe, " (", percent(pct, accuracy = 1), ")")
+  )
+
+ggplot(df_sexe, aes(x = "", y = pct, fill = sexe)) +
+  geom_col(width = 1, color = "white") +
+  coord_polar(theta = "y") +
+  geom_text(aes(label = lbl), position = position_stack(vjust = 0.5)) +
+  labs(
+    title = "Répartition par sexe",
+    fill  = "Sexe"
+  ) +
+  theme_void() +
+  theme(plot.title = element_text(hjust = 0.5, face = "bold"))
+```
+
+```{r bar_mstat}
+individu %>%
+  filter(!is.na(mstat)) %>%
+  count(mstat) %>%
+  ggplot(aes(x = mstat, y = n, fill = mstat)) +
+    geom_col(show.legend = FALSE) +
+    labs(
+      title = "Distribution du statut marital (mstat)",
+      x     = "Statut marital",
+      y     = "Effectif"
+    ) +
+    theme_minimal() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+
+```{r hist_age}
+# 4. Histogramme de 'age'
+individu %>%
+  filter(!is.na(age)) %>%
+  ggplot(aes(x = age)) +
+    geom_histogram(bins = 30, color = "black", fill = NA) +
+    labs(
+      title = "Histogramme de l'âge",
+      x     = "Âge",
+      y     = "Effectif"
+    ) +
+    theme_minimal()
+```
+

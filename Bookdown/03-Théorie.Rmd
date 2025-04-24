@@ -1,0 +1,265 @@
+# Chapitre 1 : Partie théorique {-}
+
+## I. Présentation d'une enquête {-}
+
+### 1. Définition {-}
+
+Une enquête est une méthode de collecte d’informations visant à analyser un phénomène, évaluer une situation ou vérifier des hypothèses. Elle s’appuie sur l’étude d’un échantillon représentatif d’une population, via des questionnaires, des entretiens, des observations ou l’exploitation de données existantes. 
+
+### 2. Objectifs {-}
+
+Les objectifs d’une enquête sont multiples et peuvent varier en fonction du domaine d’application :
+
+* **Décrire** : Analyser les caractéristiques d’une population.
+* **Expliquer** : Identifier les relations entre différentes variables.
+* **Prévoir** : Anticiper les tendances à partir des données recueillies.
+* **Évaluer** : Mesurer l’impact d’une politique ou d’un programme. 
+
+
+### 3. Types d'enquêtes {-}
+
+Dans le domaine des études statistiques et des sciences sociales, il existe une grande variété de types d’enquêtes. Ces dernières peuvent être classées selon plusieurs critères, notamment leur objectif, leur méthode de collecte, leur périodicité ou encore l’unité statistique étudiée. Cette typologie permet d’adapter l’outil d’enquête aux besoins spécifiques d’analyse.
+
+
+#### a. Typologie selon l'objectif de l'enquête {-}
+
+Selon l’objectif visé, on distingue principalement :
+
+* **Les enquêtes descriptives** : elles visent à dresser un état des lieux ou à observer des tendances. Par exemple, les recensements de population permettent de décrire la structure démographique d’un pays à un moment donné.
+
+* **Les enquêtes analytiques** : elles cherchent à mettre en évidence des relations de cause à effet entre différentes variables. Par exemple, une enquête peut analyser le lien entre le niveau d’instruction et l’accès à l’emploi.
+
+* **Les enquêtes évaluatives** : elles sont utilisées pour mesurer l’impact d’un programme ou d’une intervention. Par exemple, une évaluation des effets d’un programme de transfert monétaire sur la scolarisation des enfants.
+
+* **Les enquêtes expérimentales** : elles reposent sur des expériences contrôlées, comme le test d’une politique publique sur un groupe cible, afin d’en évaluer l’efficacité avant une généralisation.
+
+
+#### b. Typologie selon la méthode de collecte {-}
+
+La méthode de recueil de l’information influence grandement la qualité et la nature des données :
+
+* **Par questionnaire** : les répondants remplissent un formulaire, soit en face à face, par téléphone ou en ligne.
+
+* **Par entretien** : il peut s’agir d’entretiens individuels ou de groupes (focus groups), souvent plus qualitatifs.
+
+* **Par observation** : l’enquêteur observe directement le comportement ou les conditions, avec ou sans interaction avec les sujets.
+
+* **Par expérimentation** : les données sont collectées dans le cadre d’un test, par exemple avant la mise sur le marché d’un produit.
+
+
+#### c. Typologie selon la Périodicité {-}
+
+La fréquence de l’enquête détermine la temporalité de l’analyse :
+
+* **Enquête ponctuelle** : réalisée une seule fois, elle fournit un instant de la réalité.
+
+* **Enquête longitudinale** : elle suit un même échantillon sur une période donnée afin d’observer l’évolution dans le temps.
+
+* **Enquête récurrente** : conduite à intervalles réguliers (par exemple, chaque année), elle permet d’effectuer des comparaisons temporelles.
+
+
+#### d. Typologie selon l'unité statistique enquêtée {-}
+
+L’**unité statistique** désigne l’entité sur laquelle les observations sont effectuées. Voici les principaux types d’enquêtes en fonction de cette unité :
+
+* **Enquête ménage** : l’unité est le ménage, défini comme un groupe de personnes vivant sous le même toit et partageant des ressources. C'est par exemple le cas des enquêtes sur les conditions de vie, les revenus et dépenses, ou encore le logement. Ces enquêtes permettent d'analyser les conditions économiques, sociales et démographiques des ménages.
+
+* **Enquête individuelle** : ici, chaque individu constitue une unité statistique distincte. C'est par exemple le cas d'enquêtes démographiques et de santé (EDS), enquêtes d’opinion, ou sur les comportements de consommation. Elles permettent de recueillir des données personnelles (santé, opinions, comportements, etc.).
+
+* **Enquête sur l’entreprise** : l’unité statistique est l’entreprise ou la structure économique. C'est le cas des enquêtes sur la production industrielle, les pratiques de gestion, ou les conditions de travail. Elles servent à comprendre la structure, les performances et les caractéristiques économiques des entreprises.
+
+* **Enquête communautaire ou collective** : elle porte sur une communauté (village, groupe ethnique, zone rurale). C'est ici que l'on retrouve les enquêtes sur la santé communautaire ou sur l’accès à l’éducation dans une région spécifique. Ces enquêtes permettent d'identifier les besoins et spécificités d’un groupe ou d’un territoire.
+
+Nous pouvons également citer les enquêtes *institutionnelles*, les enquêtes *sur les biens ou produits*, les enquêtes *territoriales* ou *géographiques* ainsi que les enquêtes *longitudinales*.
+
+### 4. Catégorie courante de variable dans les enquêtes {-}
+
+L’analyse des enquêtes repose sur un ensemble de variables récurrentes, classées en grandes familles. Leur qualité et leur fiabilité influencent directement la pertinence des résultats. Voici les principaux types de variables :
+
+
+#### a. Variables d'identification {-}
+
+Ces variables sont essentielles pour assurer la traçabilité et l’organisation des données collectées.
+
+* **Identifiants de l’enquêteur et du répondant** : ils permettent d’attribuer chaque réponse à un enquêteur spécifique et à un répondant unique. Il est important de s'assurer de l'unicité des identifiants, et d'une bonne correspondance avec les questionnaires.
+
+* **Date et lieu de l’enquête** : Ces informations permettent de s’assurer que les entretiens ont été réalisés conformément au plan d’échantillonnage.
+
+* **Coordonnées GPS (si collectées)** : utile pour géolocaliser précisément les points d’enquête.
+
+
+#### b. Variables socio-démographiques {-}
+
+Ces variables fournissent un portrait de base des répondants et sont indispensables pour toute analyse segmentée. Il s'agit de **l'âge, le sexe, l'état matrimonial, le niveau d’instruction, la profession, le revenu, la taille du ménage**, etc.
+
+#### c. Variables de mode de vie {-}
+
+Elles décrivent l’environnement socio‑économique et les conditions de vie des répondants.
+C'est ici que l'on retrouve le **milieu de résidence**, (urbain/rural), **l'accès à l’eau, à l’électricité, à l’éducation et à la santé, l'activité principale**, etc.
+
+On distingue également les variables spécifiques au thème de l'enquête et les variables permettant d'évaluer la qualité des données (temps de réponse, ...).
+
+## II. Traitement d'une base de données {-}
+
+Avant d’engager toute analyse statistique, il est primordial d’appurer la base de données issue de l’enquête : il s’agit de détecter, corriger et documenter toutes les anomalies et de structurer les informations de manière cohérente
+
+### 1. Traitement à chaud {-}
+
+Dès la phase de collecte, le superviseur peut intervenir pour limiter la propagation des erreurs. Voici quelques vérifications qu'il peut effectuer:
+
+* **Contrôle géographique** : en temps réel, vérifier que chaque point GPS appartient bien à la zone d’échantillonnage prévue ; les relevés hors périmètre peuvent être automatiquement signalés à l’enquêteur pour correction immédiate.  
+
+* **Chronométrage** : un formulaire de 30 à 40 questions doit normalement prendre 10 à 15 minutes ; si un questionnaire est bouclé en moins de 2 minutes, on suspecte un remplissage automatique ou bâclé. À l’inverse, un temps supérieur à 30 minutes peut indiquer des difficultés de compréhension.  
+
+* **Profil de réponse** : comparer les schémas de réponses entre enquêtés successifs ; une similitude trop forte (tous les mêmes choix) suggère un copié‑collé ou une fraude.  
+
+* **Feedback quotidien** : grâce aux logs de synchronisation, le superviseur identifie les enquêteurs dont les saisies montrent des anomalies répétées et organise des rappels à l’ordre ou des sessions de recadrage sur le terrain.
+
+Chaque contrôle à chaud permet de rectifier immédiatement les cas manifestes et de réduire l’effort de nettoyage a posteriori. Cette vérification est importante et ne doit pas être négligée.
+
+Une fois l'enquête terminée, son appurage à froid peut commencer.
+
+### 2. Visualisation de la base {-}
+
+La première étape est d'importer et de visualiser la base dans l'environnement R. Pour ce faire, les librairies **haven**, **readr** ou **readxl** peuvent être utilisées.
+La visualisation de la base peut également necessiter quelques graphiques ou tableaux. Dans ce cas, les libriries **ggplot2** et **gtsummary** peuvent être utilisées. La base pourra ensuite être nettoyée avec le package **janitor**.
+
+### 3. Traitement des doublons {-}
+
+La première chose à vérifier lors du traitement à froid des données est la présence de doublons. Si des doublons sont détectés, ils doivent être supprimés de peur de biaiser les résultats.
+Toutefois, l'idéal reste toujours de contacter les ménages enquêtés pour avoir de vraies informations.
+
+### 4. Traitement des valeurs manquantes {-}
+
+Les valeurs manquantes dans une base de données peuvent apparaître pour différentes raisons (non-réponse, erreur de saisie, données non disponibles, etc.). On distingue généralement trois types de valeurs manquantes :
+
+* **MCAR (Missing Completely At Random)** : Les données sont manquantes de façon complètement aléatoire. L'absence de données n’est liée ni aux variables observées ni aux variables non observées.  
+  *Exemple : une ligne d’un questionnaire a été perdue à cause d’un problème technique.*
+
+* **MAR (Missing At Random)** : Les données sont manquantes de manière conditionnelle, c’est-à-dire que l’absence de réponse dépend d'autres variables observées dans le jeu de données.  
+  *Exemple : les personnes âgées répondent moins souvent à certaines questions sensibles.*
+
+* **MNAR (Missing Not At Random)** : Les données sont manquantes de manière non aléatoire, c’est-à-dire que l'absence dépend de la variable elle-même.  
+  *Exemple : une personne qui ne souhaite pas déclarer son revenu parce qu’il est très élevé ou très faible.*
+
+Le traitement des valeurs manquantes dépend à la fois du **type de variable** concernée (numérique, catégorielle ou texte libre) et du **contexte de l’analyse**.
+
+#### a. Variables numériques {-}
+
+Voici quelques méthodes de traitement des valeurs manquantes pour les variables numériques :
+
+* **Suppression** : supprimer les lignes ou colonnes contenant trop de valeurs manquantes (si la proportion est faible). Il faut faire attention à ne pas biaiser l’analyse si les données ne sont pas MCAR.
+
+* **Imputation simple** : cette méthode consiste à remplacer les valeurs manquantes par la moyenne ou la médianne (plus robuste aux valeurs extrêmes) ou encore une valeur constante.
+
+* **Imputation conditionnelle** : c'est une sorte d'amélioration de l'imputation simple. L'imputation se fait toujours par la moyenne ou la médianne, mais en faisant des regroupements par variable catégorielle (sexe, région).
+
+* **Régression** : cette méthode permet de prédire la variable manquante à partir d’autres variables (modèle linéaire).
+
+Il existe également des méthodes plus avancées comme la méthode des **k-NN (k plus proches voisins)**, imputation basée sur les observations similaires; la méthode des **arbres de décision**  avec des modèles comme *random forest* pour estimer les valeurs manquantes; ainsique les méthodes **bayésiennes** ou **multiple imputation** pour refléter l’incertitude liée au manque.
+
+#### b. Variables catégorielles (facteurs) {-}
+
+Les méthodes d'imputation les plus utilisées pour les variables catégorielles sont :
+
+* **Suppression** : comme précédemment, elle peut être utilisée si la proportion de lignes ou colonnes contenant plusieurs valeurs manquantes est faible ou si la catégorie n'est pas cruciale.
+
+* **Imputation simple** : cette méthode consiste à remplacer par les valeurs manquantes, par la **modalité la plus fréquente** (mode) ou une valeur spéciale (comme "Inconnu", "Non répondu") pour garder la trace du manquant.
+
+* **Imputation conditionnelle** : Il s'agit de regrouper les observations par d'autres variables catégorielles comme sexe ou zone géographique avant de calculer le mode et de proceder à l'imputation.
+
+Les modèles de classification (arbre de décision, régression logistique) peuvent également être utiisés pour prédire la modalité manquante, ainsi que d'autres méthodes comme l'utilisation de modèles d’apprentissage automatique adaptés aux variables catégorielles.
+
+
+#### c. Variables textuelles (libre) {-}
+
+Voici quelques méthodes d'imputation pour ce type de variable :
+
+* **Suppression ou remplacement par une chaîne vide** (`""`) si la variable est peu informative.
+
+* **Création d’une modalité** *"Manquant"* ou *"Non précisé"*.
+
+* **Imputation par des règles logiques ou NLP** (traitement automatique du langage) : comme une extraction de texte similaire à partir d’autres champs ou une classification sémantique si le texte a des structures régulières (ex : intitulé de métier, nom de commune).
+
+Le choix de la méthode d'imputation dépend non seulement du type de la variable, mais également du **taux de valeurs manquantes**, du **type de données** et de leur importance dans l’analyse, du **modèle statistique ou machine learning** utilisé ensuite et des **ressources disponibles** (temps, capacité de calcul, expertise).
+
+Il est important d’**analyser les motifs de manquants** avant toute imputation pour ne pas introduire de biais.
+
+Une autre chose à noter est que toutes les valeurs manquantes ne sont pas à imputer, par exemple, un enfant de 6 ans qui présente NA à la variable emplois n'est pas une valeur manquante. Imputer cette valeur reviendrait à fausser complètement la base de données. Enfin, le meilleur moyen de traiter une valeur manquante est autant que possible chercher à avoir accès aux données réelles.
+
+### 5. Traitement des valeurs aberrantes {-}
+
+Les valeurs aberrantes (outliers) sont des observations extrêmes qui divergent sensiblement de la tendance générale des données. Leur présence peut biaiser les estimations statistiques, fausser les modèles et conduire à des conclusions erronées. Le traitement approprié des valeurs aberrantes est donc essentiel pour garantir la fiabilité des analyses.
+
+**Une valeur aberrante** se définit comme une observation dont la distance à la distribution centrale dépasse significativement celle des autres points. Elle peut être légitime (phénomène rare) ou erronée (erreur de saisie, de mesure, etc.). Elle peut être causée par des erreurs humaines (saisie, codage), des problèmes techniques (capteurs défaillants) ou des caractéristiques intrinsèques de la population (phénomènes extrêmes).
+
+La détection de ces valeurs peut se faire de manière graphique ou statistique :
+
+* **Approche graphique** : 
+
+  - **Boîte à moustaches (boxplot)** : points au-delà des moustaches (1,5 × IQR) sont suspects.
+  - **Histogramme** : pic isolé dans les extrémités.
+  - **Scatterplot** (pour variables continues) : nuages de points mettant en évidence les points isolés.
+
+* **Approche statistique** :
+
+  - **Z-score** : \( z_i = (x_i - \bar x)/s \). Valeurs |z| > 3 souvent considérées comme aberrantes.
+  - **Méthode IQR** : observations < Q1 - 1,5 × IQR ou > Q3 + 1,5 × IQR
+  - **Distance de Mahalanobis** (multidimensionnel)
+  - **Score de robustesse** : basés sur la médiane et l’écart absolu médian (MAD).
+  \[
+    \mathrm{MAD} = \mathrm{median}(|x_i - \mathrm{median}(x)|)
+  \]
+  \( \mathrm{robust\_z}_i = (x_i - m)/ (1.4826 \times \mathrm{MAD}) \)
+
+
+Voici quelques méthodes de traitement des valeurs aberrantes :
+
+* **Suppression des aberrations** : C'est la méthode d'imputation la plus simple, mais elle est très dangereuse, car elle conduit à une perte d’information, et peut biaiser les données si les outliers sont légitimes.
+
+* **Imputation** : la valeur de remplacement peut être la moyenne, la médiane, ou une méthode plus sophistiquée (k-NN, régression multiple).
+
+* **Winsorisation** : il s'agit de rapprocher les valeurs extrêmes aux percentiles (p.ex. 5e et 95e).
+
+* **Transformation** : elle consiste à faire une transformation logarithmique, racine carrée, ou Box–Cox des données afin de réduire l’effet des valeurs extrêmes.
+
+Des modèles robustes comme les arbres de decision peuvent également être utilisés dans le cadre du traitement des valeus aberrantes.
+
+### 6. Traitement des incohérences {-}
+
+Une **valeur incohérente** fait référence à une donnée qui ne respecte pas les règles ou les attentes logiques d'un jeu de données, ce qui peut entraîner des erreurs dans l'analyse. Les incohérences dans les données peuvent être dues à plusieurs facteurs, comme une mauvaise collecte, des erreurs de saisie, ou des anomalies dans la logique des valeurs par rapport à d'autres variables.
+
+Voici quelques exemples de valeurs incohérentes :
+
+* **Valeurs numériques hors de portée attendue** : par exemple, une variable "âge" dans une enquête pourrait avoir une valeur de 200, ce qui est incohérent (car l'âge ne peut pas être supérieur à 120 dans la plupart des cas). Ou encore un salaire de 0 FCFA pour une personne travaillant dans une entreprise.
+
+* **Valeurs textuelles incorrectes ou mal formatées** : une variable "sexe" pourrait avoir une valeur "Homme" ou "Femme", mais une valeur "Autre" ou "Indéterminé" dans un cas où cette information ne devrait pas exister. Ou une colonne "date de naissance" peut contenir des valeurs comme "1999-02-30" ou des formats incorrects (par exemple "31/02/2022").
+
+* **Incohérence entre plusieurs variables** : dans une base de données sur les ventes, une "quantité vendue" pourrait être indiquée comme étant de 1000, mais si le "prix unitaire" est 0, cela créerait une incohérence par rapport au montant total de la vente. Si une variable "sexe" est indiquée comme "Femme" et une variable "État civil" indique "Marié(e)", mais la colonne "Âge" est indiquée comme étant "10 ans", il y a une incohérence dans l'ensemble des données.
+
+* **Valeurs manquantes ou vides là où elles sont attendues** : par exemple, une variable "numéro de téléphone" peut avoir une valeur vide pour un client qui a fourni ses informations.
+
+
+Il existe plusieurs approches pour détecter ces valeurs incohérentes dans un jeu de données. Ces approches peuvent être réalisées de manière manuelle (en inspectant les données) ou automatisée à l'aide de techniques de *contrôle de la qualité des données*.
+
+Voici quelques méthodes pour détecter des valeurs incohérentes :
+
+* **Détection par validation des valeurs numériques** :
+   - *Plage de valeurs* : Vérifiez que les valeurs numériques se trouvent dans une plage raisonnable. Par exemple, pour l'âge, les valeurs devraient être comprises entre 0 et 120 ans.
+   - *Histogrammes et Boxplots* : Utilisez des graphiques comme les histogrammes ou boxplots pour visualiser les distributions des données et identifier les valeurs extrêmes ou aberrantes.
+
+* **Détection par logique entre variables** :
+   - Utilisez des règles logiques pour vérifier les relations entre les variables. Par exemple, si "sexe" = "Homme", alors "grossesse" ne peut pas être une variable valide.
+   - Vérifiez que les relations entre les variables sont cohérentes. Si une variable "quantité" a une valeur supérieure à une certaine limite et une variable "prix" est égale à zéro, l'analyse doit déclencher une alerte.
+
+* **Vérification des formats de données** :
+   - Assurez-vous que les formats des dates, des numéros de téléphone, des adresses email, etc., sont conformes aux attentes. Par exemple, une date de naissance doit être dans un format valide (yyyy-mm-dd), sinon elle peut être signalée comme incohérente.
+   - En R, vous pouvez utiliser des expressions régulières (regex) pour vérifier les formats de chaînes.
+
+   
+* **Détection des valeurs manquantes ou vides** :
+   - Vérifiez les valeurs manquantes dans les colonnes essentielles à l'analyse. Une valeur vide dans une variable qui doit absolument être renseignée (comme le "numéro de téléphone" d'un client) est une incohérence.
+   - Utilisez des fonctions comme is.na() pour détecter les valeurs manquantes.
+   
+* **Utilisation d'algorithmes de détection de valeurs aberrantes** :
+   - Utilisez des algorithmes statistiques comme *IQR (interquartile range)* ou *Z-scores* pour identifier des valeurs anormales. Ces valeurs peuvent être considérées comme incohérentes si elles sont extrêmement éloignées de la moyenne.^[This is a footnote.]

@@ -1,0 +1,5 @@
+# Chapitre 3 : Automatisation du traitement d'une base de données {-}
+
+Une application a été conçue sur R shiny pour essayer d'automatiser le traitement des bases de données.
+
+[Ouvrir la Plateforme de traitements d’enquêtes](https://celinannc.shinyapps.io/Plateforme_traitements_enquetes/)

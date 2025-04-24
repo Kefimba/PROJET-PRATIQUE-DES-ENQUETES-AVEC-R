@@ -1,0 +1,115 @@
+---
+title: "PRATIQUES D'ENQUETES AVEC R"
+site: bookdown::bookdown_site
+documentclass: book
+output:
+  bookdown::gitbook:
+    css: style.css
+    toc_depth: 2
+    split_by: chapter
+    config:
+      toc:
+        collapse: section
+      edit: null
+      download: ["pdf"]
+      sharing: no
+bibliography: book.bib
+always_allow_html: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  comment=NA,
+  echo    = FALSE,
+  warning = FALSE,
+  message = FALSE
+)
+
+#Librairies:
+# Installer les packages nécessaires s'ils ne sont pas déjà installés
+packages <- c("haven", "dplyr", "gtsummary", "tidyr", "labelled",
+              "purrr", "gt", "modeest", "ggplot2", "scales","knitr","kableExtra")
+
+install_if_missing <- function(pkg) {
+  if (!requireNamespace(pkg, quietly = TRUE)) {
+    install.packages(pkg)
+  }
+}
+
+invisible(lapply(packages, install_if_missing))
+
+# Charger les librairies
+library(haven)
+library(dplyr)
+library(gtsummary)
+library(tidyr)
+library(labelled)
+library(purrr)
+library(gt)
+library(modeest)
+library(ggplot2)
+library(scales)
+library(knitr)
+library(kableExtra)
+
+```
+
+
+# Exposé de R {-}
+<!-- Centrer les logos et le texte -->
+
+<div style="text-align: center;">
+
+<!-- Logos -->
+
+<img src="LOGO3.jpg" width="150" style="margin-right: 20px;"> <br>
+
+<i>Ministère de l'Economie, du Plan et de la Coopération</i> <br>
+
+<img src="LOGO2.jpg" width="100" style="margin-right: 20px;"> <br>
+
+<i>Agence nationale de la Statistique et de la Démographie (ANSD)</i> <br>
+
+<img src="LOGO1.jpg" width="60"> <br>
+
+<i>Ecole nationale de la Statistique et de l'Analyse économique Pierre Ndiaye (ENSAE)</i> <br>
+
+<br><br>
+
+<!-- Titre du projet -->
+<p style="font-size: 28px; font-weight: bold; color: blue;">
+Projet statistique avec R
+</p>
+
+
+<p style="font-size: 28px; font-weight: bold; color: blue;">
+PRATIQUES D'ENQUETES AVEC R_Traitement à froid
+</p>
+
+
+<!-- Informations sur les rédacteurs -->
+<p style="font-size: 18px;">
+<i>Rédigé par :</i> <br>
+<b>NGUEMFOUO NGOUMTSA Célina</b> et <b>Mamady I BERETE</b> <br>
+<i>Élèves Ingénieurs Statisticiens Économistes </i>
+</p>
+
+<br>
+
+<!-- Superviseur -->
+<p style="font-size: 18px;">
+<i>Sous la supervision de :</i> <br>
+<b>M. Aboubacar HEMA</b> <br>
+<i>Data Analyst</i>
+</p>
+
+<br>
+
+<!-- Année scolaire -->
+<p style="font-size: 20px; font-weight: bold;">
+Année scolaire : 2024/2025
+</p>
+
+</div>
+
+<!----------------------------------FIN DE SCRIPT - Page de garde---------------------------------------->
