@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapitre 1 : Partie théorique | PRATIQUES D’ENQUETES AVEC R</title>
+  <meta name="description" content="Chapitre 1 : Partie théorique | PRATIQUES D’ENQUETES AVEC R" />
+  <meta name="generator" content="bookdown 0.43 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapitre 1 : Partie théorique | PRATIQUES D’ENQUETES AVEC R" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapitre 1 : Partie théorique | PRATIQUES D’ENQUETES AVEC R" />
+  
+  
+  
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="introduction.html"/>
+<link rel="next" href="chapitre-2-partie-pratique.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<link href="libs/bsTable-3.3.7/bootstrapTable.min.css" rel="stylesheet" />
+<script src="libs/bsTable-3.3.7/bootstrapTable.js"></script>
+
+
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="index.html">PRATIQUE DES ENQUETES AVEC R <br> Traitement à froid</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Exposé de R</a></li>
+<li class="chapter" data-level="" data-path="avant-propos.html"><a href="avant-propos.html"><i class="fa fa-check"></i>Avant-propos</a></li>
+<li class="chapter" data-level="" data-path="résumé.html"><a href="résumé.html"><i class="fa fa-check"></i>Résumé</a></li>
+<li class="chapter" data-level="" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i>Introduction</a></li>
+<li class="chapter" data-level="" data-path="chapitre-1-partie-théorique.html"><a href="chapitre-1-partie-théorique.html"><i class="fa fa-check"></i>Chapitre 1 : Partie théorique</a>
+<ul>
+<li class="chapter" data-level="" data-path="chapitre-1-partie-théorique.html"><a href="chapitre-1-partie-théorique.html#i.-présentation-dune-enquête"><i class="fa fa-check"></i>I. Présentation d’une enquête</a></li>
+<li class="chapter" data-level="" data-path="chapitre-1-partie-théorique.html"><a href="chapitre-1-partie-théorique.html#ii.-traitement-dune-base-de-données"><i class="fa fa-check"></i>II. Traitement d’une base de données</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="chapitre-2-partie-pratique.html"><a href="chapitre-2-partie-pratique.html"><i class="fa fa-check"></i>Chapitre 2 : Partie Pratique</a>
+<ul>
+<li class="chapter" data-level="" data-path="chapitre-2-partie-pratique.html"><a href="chapitre-2-partie-pratique.html#i.-cas-dune-enquête-ménage"><i class="fa fa-check"></i>I. Cas d’une enquête ménage</a></li>
+<li class="chapter" data-level="" data-path="chapitre-2-partie-pratique.html"><a href="chapitre-2-partie-pratique.html#ii.-cas-dune-enquête-individu"><i class="fa fa-check"></i>II. Cas d’une enquête individu</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="chapitre-3-automatisation-du-traitement-dune-base-de-données.html"><a href="chapitre-3-automatisation-du-traitement-dune-base-de-données.html"><i class="fa fa-check"></i>Chapitre 3 : Automatisation du traitement d’une base de données</a></li>
+<li class="chapter" data-level="" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i>Conclusion</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">PRATIQUES D’ENQUETES AVEC R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="chapitre-1-partie-théorique" class="section level1 unnumbered hasAnchor">
+<h1>Chapitre 1 : Partie théorique<a href="chapitre-1-partie-théorique.html#chapitre-1-partie-théorique" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="i.-présentation-dune-enquête" class="section level2 unnumbered hasAnchor">
+<h2>I. Présentation d’une enquête<a href="chapitre-1-partie-théorique.html#i.-présentation-dune-enquête" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="définition" class="section level3 unnumbered hasAnchor">
+<h3>1. Définition<a href="chapitre-1-partie-théorique.html#définition" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Une enquête est une méthode de collecte d’informations visant à analyser un phénomène, évaluer une situation ou vérifier des hypothèses. Elle s’appuie sur l’étude d’un échantillon représentatif d’une population, via des questionnaires, des entretiens, des observations ou l’exploitation de données existantes.</p>
+</div>
+<div id="objectifs" class="section level3 unnumbered hasAnchor">
+<h3>2. Objectifs<a href="chapitre-1-partie-théorique.html#objectifs" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Les objectifs d’une enquête sont multiples et peuvent varier en fonction du domaine d’application :</p>
+<ul>
+<li><strong>Décrire</strong> : Analyser les caractéristiques d’une population.</li>
+<li><strong>Expliquer</strong> : Identifier les relations entre différentes variables.</li>
+<li><strong>Prévoir</strong> : Anticiper les tendances à partir des données recueillies.</li>
+<li><strong>Évaluer</strong> : Mesurer l’impact d’une politique ou d’un programme.</li>
+</ul>
+</div>
+<div id="types-denquêtes" class="section level3 unnumbered hasAnchor">
+<h3>3. Types d’enquêtes<a href="chapitre-1-partie-théorique.html#types-denquêtes" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Dans le domaine des études statistiques et des sciences sociales, il existe une grande variété de types d’enquêtes. Ces dernières peuvent être classées selon plusieurs critères, notamment leur objectif, leur méthode de collecte, leur périodicité ou encore l’unité statistique étudiée. Cette typologie permet d’adapter l’outil d’enquête aux besoins spécifiques d’analyse.</p>
+<div id="a.-typologie-selon-lobjectif-de-lenquête" class="section level4 unnumbered hasAnchor">
+<h4>a. Typologie selon l’objectif de l’enquête<a href="chapitre-1-partie-théorique.html#a.-typologie-selon-lobjectif-de-lenquête" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Selon l’objectif visé, on distingue principalement :</p>
+<ul>
+<li><p><strong>Les enquêtes descriptives</strong> : elles visent à dresser un état des lieux ou à observer des tendances. Par exemple, les recensements de population permettent de décrire la structure démographique d’un pays à un moment donné.</p></li>
+<li><p><strong>Les enquêtes analytiques</strong> : elles cherchent à mettre en évidence des relations de cause à effet entre différentes variables. Par exemple, une enquête peut analyser le lien entre le niveau d’instruction et l’accès à l’emploi.</p></li>
+<li><p><strong>Les enquêtes évaluatives</strong> : elles sont utilisées pour mesurer l’impact d’un programme ou d’une intervention. Par exemple, une évaluation des effets d’un programme de transfert monétaire sur la scolarisation des enfants.</p></li>
+<li><p><strong>Les enquêtes expérimentales</strong> : elles reposent sur des expériences contrôlées, comme le test d’une politique publique sur un groupe cible, afin d’en évaluer l’efficacité avant une généralisation.</p></li>
+</ul>
+</div>
+<div id="b.-typologie-selon-la-méthode-de-collecte" class="section level4 unnumbered hasAnchor">
+<h4>b. Typologie selon la méthode de collecte<a href="chapitre-1-partie-théorique.html#b.-typologie-selon-la-méthode-de-collecte" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>La méthode de recueil de l’information influence grandement la qualité et la nature des données :</p>
+<ul>
+<li><p><strong>Par questionnaire</strong> : les répondants remplissent un formulaire, soit en face à face, par téléphone ou en ligne.</p></li>
+<li><p><strong>Par entretien</strong> : il peut s’agir d’entretiens individuels ou de groupes (focus groups), souvent plus qualitatifs.</p></li>
+<li><p><strong>Par observation</strong> : l’enquêteur observe directement le comportement ou les conditions, avec ou sans interaction avec les sujets.</p></li>
+<li><p><strong>Par expérimentation</strong> : les données sont collectées dans le cadre d’un test, par exemple avant la mise sur le marché d’un produit.</p></li>
+</ul>
+</div>
+<div id="c.-typologie-selon-la-périodicité" class="section level4 unnumbered hasAnchor">
+<h4>c. Typologie selon la Périodicité<a href="chapitre-1-partie-théorique.html#c.-typologie-selon-la-périodicité" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>La fréquence de l’enquête détermine la temporalité de l’analyse :</p>
+<ul>
+<li><p><strong>Enquête ponctuelle</strong> : réalisée une seule fois, elle fournit un instant de la réalité.</p></li>
+<li><p><strong>Enquête longitudinale</strong> : elle suit un même échantillon sur une période donnée afin d’observer l’évolution dans le temps.</p></li>
+<li><p><strong>Enquête récurrente</strong> : conduite à intervalles réguliers (par exemple, chaque année), elle permet d’effectuer des comparaisons temporelles.</p></li>
+</ul>
+</div>
+<div id="d.-typologie-selon-lunité-statistique-enquêtée" class="section level4 unnumbered hasAnchor">
+<h4>d. Typologie selon l’unité statistique enquêtée<a href="chapitre-1-partie-théorique.html#d.-typologie-selon-lunité-statistique-enquêtée" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>L’<strong>unité statistique</strong> désigne l’entité sur laquelle les observations sont effectuées. Voici les principaux types d’enquêtes en fonction de cette unité :</p>
+<ul>
+<li><p><strong>Enquête ménage</strong> : l’unité est le ménage, défini comme un groupe de personnes vivant sous le même toit et partageant des ressources. C’est par exemple le cas des enquêtes sur les conditions de vie, les revenus et dépenses, ou encore le logement. Ces enquêtes permettent d’analyser les conditions économiques, sociales et démographiques des ménages.</p></li>
+<li><p><strong>Enquête individuelle</strong> : ici, chaque individu constitue une unité statistique distincte. C’est par exemple le cas d’enquêtes démographiques et de santé (EDS), enquêtes d’opinion, ou sur les comportements de consommation. Elles permettent de recueillir des données personnelles (santé, opinions, comportements, etc.).</p></li>
+<li><p><strong>Enquête sur l’entreprise</strong> : l’unité statistique est l’entreprise ou la structure économique. C’est le cas des enquêtes sur la production industrielle, les pratiques de gestion, ou les conditions de travail. Elles servent à comprendre la structure, les performances et les caractéristiques économiques des entreprises.</p></li>
+<li><p><strong>Enquête communautaire ou collective</strong> : elle porte sur une communauté (village, groupe ethnique, zone rurale). C’est ici que l’on retrouve les enquêtes sur la santé communautaire ou sur l’accès à l’éducation dans une région spécifique. Ces enquêtes permettent d’identifier les besoins et spécificités d’un groupe ou d’un territoire.</p></li>
+</ul>
+<p>Nous pouvons également citer les enquêtes <em>institutionnelles</em>, les enquêtes <em>sur les biens ou produits</em>, les enquêtes <em>territoriales</em> ou <em>géographiques</em> ainsi que les enquêtes <em>longitudinales</em>.</p>
+</div>
+</div>
+<div id="catégorie-courante-de-variable-dans-les-enquêtes" class="section level3 unnumbered hasAnchor">
+<h3>4. Catégorie courante de variable dans les enquêtes<a href="chapitre-1-partie-théorique.html#catégorie-courante-de-variable-dans-les-enquêtes" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>L’analyse des enquêtes repose sur un ensemble de variables récurrentes, classées en grandes familles. Leur qualité et leur fiabilité influencent directement la pertinence des résultats. Voici les principaux types de variables :</p>
+<div id="a.-variables-didentification" class="section level4 unnumbered hasAnchor">
+<h4>a. Variables d’identification<a href="chapitre-1-partie-théorique.html#a.-variables-didentification" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Ces variables sont essentielles pour assurer la traçabilité et l’organisation des données collectées.</p>
+<ul>
+<li><p><strong>Identifiants de l’enquêteur et du répondant</strong> : ils permettent d’attribuer chaque réponse à un enquêteur spécifique et à un répondant unique. Il est important de s’assurer de l’unicité des identifiants, et d’une bonne correspondance avec les questionnaires.</p></li>
+<li><p><strong>Date et lieu de l’enquête</strong> : Ces informations permettent de s’assurer que les entretiens ont été réalisés conformément au plan d’échantillonnage.</p></li>
+<li><p><strong>Coordonnées GPS (si collectées)</strong> : utile pour géolocaliser précisément les points d’enquête.</p></li>
+</ul>
+</div>
+<div id="b.-variables-socio-démographiques" class="section level4 unnumbered hasAnchor">
+<h4>b. Variables socio-démographiques<a href="chapitre-1-partie-théorique.html#b.-variables-socio-démographiques" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Ces variables fournissent un portrait de base des répondants et sont indispensables pour toute analyse segmentée. Il s’agit de <strong>l’âge, le sexe, l’état matrimonial, le niveau d’instruction, la profession, le revenu, la taille du ménage</strong>, etc.</p>
+</div>
+<div id="c.-variables-de-mode-de-vie" class="section level4 unnumbered hasAnchor">
+<h4>c. Variables de mode de vie<a href="chapitre-1-partie-théorique.html#c.-variables-de-mode-de-vie" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Elles décrivent l’environnement socio‑économique et les conditions de vie des répondants.
+C’est ici que l’on retrouve le <strong>milieu de résidence</strong>, (urbain/rural), <strong>l’accès à l’eau, à l’électricité, à l’éducation et à la santé, l’activité principale</strong>, etc.</p>
+<p>On distingue également les variables spécifiques au thème de l’enquête et les variables permettant d’évaluer la qualité des données (temps de réponse, …).</p>
+</div>
+</div>
+</div>
+<div id="ii.-traitement-dune-base-de-données" class="section level2 unnumbered hasAnchor">
+<h2>II. Traitement d’une base de données<a href="chapitre-1-partie-théorique.html#ii.-traitement-dune-base-de-données" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Avant d’engager toute analyse statistique, il est primordial d’appurer la base de données issue de l’enquête : il s’agit de détecter, corriger et documenter toutes les anomalies et de structurer les informations de manière cohérente</p>
+<div id="traitement-à-chaud" class="section level3 unnumbered hasAnchor">
+<h3>1. Traitement à chaud<a href="chapitre-1-partie-théorique.html#traitement-à-chaud" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Dès la phase de collecte, le superviseur peut intervenir pour limiter la propagation des erreurs. Voici quelques vérifications qu’il peut effectuer:</p>
+<ul>
+<li><p><strong>Contrôle géographique</strong> : en temps réel, vérifier que chaque point GPS appartient bien à la zone d’échantillonnage prévue ; les relevés hors périmètre peuvent être automatiquement signalés à l’enquêteur pour correction immédiate.</p></li>
+<li><p><strong>Chronométrage</strong> : un formulaire de 30 à 40 questions doit normalement prendre 10 à 15 minutes ; si un questionnaire est bouclé en moins de 2 minutes, on suspecte un remplissage automatique ou bâclé. À l’inverse, un temps supérieur à 30 minutes peut indiquer des difficultés de compréhension.</p></li>
+<li><p><strong>Profil de réponse</strong> : comparer les schémas de réponses entre enquêtés successifs ; une similitude trop forte (tous les mêmes choix) suggère un copié‑collé ou une fraude.</p></li>
+<li><p><strong>Feedback quotidien</strong> : grâce aux logs de synchronisation, le superviseur identifie les enquêteurs dont les saisies montrent des anomalies répétées et organise des rappels à l’ordre ou des sessions de recadrage sur le terrain.</p></li>
+</ul>
+<p>Chaque contrôle à chaud permet de rectifier immédiatement les cas manifestes et de réduire l’effort de nettoyage a posteriori. Cette vérification est importante et ne doit pas être négligée.</p>
+<p>Une fois l’enquête terminée, son appurage à froid peut commencer.</p>
+</div>
+<div id="visualisation-de-la-base" class="section level3 unnumbered hasAnchor">
+<h3>2. Visualisation de la base<a href="chapitre-1-partie-théorique.html#visualisation-de-la-base" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>La première étape est d’importer et de visualiser la base dans l’environnement R. Pour ce faire, les librairies <strong>haven</strong>, <strong>readr</strong> ou <strong>readxl</strong> peuvent être utilisées.
+La visualisation de la base peut également necessiter quelques graphiques ou tableaux. Dans ce cas, les libriries <strong>ggplot2</strong> et <strong>gtsummary</strong> peuvent être utilisées. La base pourra ensuite être nettoyée avec le package <strong>janitor</strong>.</p>
+</div>
+<div id="traitement-des-doublons" class="section level3 unnumbered hasAnchor">
+<h3>3. Traitement des doublons<a href="chapitre-1-partie-théorique.html#traitement-des-doublons" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>La première chose à vérifier lors du traitement à froid des données est la présence de doublons. Si des doublons sont détectés, ils doivent être supprimés de peur de biaiser les résultats.
+Toutefois, l’idéal reste toujours de contacter les ménages enquêtés pour avoir de vraies informations.</p>
+</div>
+<div id="traitement-des-valeurs-manquantes" class="section level3 unnumbered hasAnchor">
+<h3>4. Traitement des valeurs manquantes<a href="chapitre-1-partie-théorique.html#traitement-des-valeurs-manquantes" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Les valeurs manquantes dans une base de données peuvent apparaître pour différentes raisons (non-réponse, erreur de saisie, données non disponibles, etc.). On distingue généralement trois types de valeurs manquantes :</p>
+<ul>
+<li><p><strong>MCAR (Missing Completely At Random)</strong> : Les données sont manquantes de façon complètement aléatoire. L’absence de données n’est liée ni aux variables observées ni aux variables non observées.<br />
+<em>Exemple : une ligne d’un questionnaire a été perdue à cause d’un problème technique.</em></p></li>
+<li><p><strong>MAR (Missing At Random)</strong> : Les données sont manquantes de manière conditionnelle, c’est-à-dire que l’absence de réponse dépend d’autres variables observées dans le jeu de données.<br />
+<em>Exemple : les personnes âgées répondent moins souvent à certaines questions sensibles.</em></p></li>
+<li><p><strong>MNAR (Missing Not At Random)</strong> : Les données sont manquantes de manière non aléatoire, c’est-à-dire que l’absence dépend de la variable elle-même.<br />
+<em>Exemple : une personne qui ne souhaite pas déclarer son revenu parce qu’il est très élevé ou très faible.</em></p></li>
+</ul>
+<p>Le traitement des valeurs manquantes dépend à la fois du <strong>type de variable</strong> concernée (numérique, catégorielle ou texte libre) et du <strong>contexte de l’analyse</strong>.</p>
+<div id="a.-variables-numériques" class="section level4 unnumbered hasAnchor">
+<h4>a. Variables numériques<a href="chapitre-1-partie-théorique.html#a.-variables-numériques" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Voici quelques méthodes de traitement des valeurs manquantes pour les variables numériques :</p>
+<ul>
+<li><p><strong>Suppression</strong> : supprimer les lignes ou colonnes contenant trop de valeurs manquantes (si la proportion est faible). Il faut faire attention à ne pas biaiser l’analyse si les données ne sont pas MCAR.</p></li>
+<li><p><strong>Imputation simple</strong> : cette méthode consiste à remplacer les valeurs manquantes par la moyenne ou la médianne (plus robuste aux valeurs extrêmes) ou encore une valeur constante.</p></li>
+<li><p><strong>Imputation conditionnelle</strong> : c’est une sorte d’amélioration de l’imputation simple. L’imputation se fait toujours par la moyenne ou la médianne, mais en faisant des regroupements par variable catégorielle (sexe, région).</p></li>
+<li><p><strong>Régression</strong> : cette méthode permet de prédire la variable manquante à partir d’autres variables (modèle linéaire).</p></li>
+</ul>
+<p>Il existe également des méthodes plus avancées comme la méthode des <strong>k-NN (k plus proches voisins)</strong>, imputation basée sur les observations similaires; la méthode des <strong>arbres de décision</strong> avec des modèles comme <em>random forest</em> pour estimer les valeurs manquantes; ainsique les méthodes <strong>bayésiennes</strong> ou <strong>multiple imputation</strong> pour refléter l’incertitude liée au manque.</p>
+</div>
+<div id="b.-variables-catégorielles-facteurs" class="section level4 unnumbered hasAnchor">
+<h4>b. Variables catégorielles (facteurs)<a href="chapitre-1-partie-théorique.html#b.-variables-catégorielles-facteurs" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Les méthodes d’imputation les plus utilisées pour les variables catégorielles sont :</p>
+<ul>
+<li><p><strong>Suppression</strong> : comme précédemment, elle peut être utilisée si la proportion de lignes ou colonnes contenant plusieurs valeurs manquantes est faible ou si la catégorie n’est pas cruciale.</p></li>
+<li><p><strong>Imputation simple</strong> : cette méthode consiste à remplacer par les valeurs manquantes, par la <strong>modalité la plus fréquente</strong> (mode) ou une valeur spéciale (comme “Inconnu”, “Non répondu”) pour garder la trace du manquant.</p></li>
+<li><p><strong>Imputation conditionnelle</strong> : Il s’agit de regrouper les observations par d’autres variables catégorielles comme sexe ou zone géographique avant de calculer le mode et de proceder à l’imputation.</p></li>
+</ul>
+<p>Les modèles de classification (arbre de décision, régression logistique) peuvent également être utiisés pour prédire la modalité manquante, ainsi que d’autres méthodes comme l’utilisation de modèles d’apprentissage automatique adaptés aux variables catégorielles.</p>
+</div>
+<div id="c.-variables-textuelles-libre" class="section level4 unnumbered hasAnchor">
+<h4>c. Variables textuelles (libre)<a href="chapitre-1-partie-théorique.html#c.-variables-textuelles-libre" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Voici quelques méthodes d’imputation pour ce type de variable :</p>
+<ul>
+<li><p><strong>Suppression ou remplacement par une chaîne vide</strong> (<code>""</code>) si la variable est peu informative.</p></li>
+<li><p><strong>Création d’une modalité</strong> <em>“Manquant”</em> ou <em>“Non précisé”</em>.</p></li>
+<li><p><strong>Imputation par des règles logiques ou NLP</strong> (traitement automatique du langage) : comme une extraction de texte similaire à partir d’autres champs ou une classification sémantique si le texte a des structures régulières (ex : intitulé de métier, nom de commune).</p></li>
+</ul>
+<p>Le choix de la méthode d’imputation dépend non seulement du type de la variable, mais également du <strong>taux de valeurs manquantes</strong>, du <strong>type de données</strong> et de leur importance dans l’analyse, du <strong>modèle statistique ou machine learning</strong> utilisé ensuite et des <strong>ressources disponibles</strong> (temps, capacité de calcul, expertise).</p>
+<p>Il est important d’<strong>analyser les motifs de manquants</strong> avant toute imputation pour ne pas introduire de biais.</p>
+<p>Une autre chose à noter est que toutes les valeurs manquantes ne sont pas à imputer, par exemple, un enfant de 6 ans qui présente NA à la variable emplois n’est pas une valeur manquante. Imputer cette valeur reviendrait à fausser complètement la base de données. Enfin, le meilleur moyen de traiter une valeur manquante est autant que possible chercher à avoir accès aux données réelles.</p>
+</div>
+</div>
+<div id="traitement-des-valeurs-aberrantes" class="section level3 unnumbered hasAnchor">
+<h3>5. Traitement des valeurs aberrantes<a href="chapitre-1-partie-théorique.html#traitement-des-valeurs-aberrantes" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Les valeurs aberrantes (outliers) sont des observations extrêmes qui divergent sensiblement de la tendance générale des données. Leur présence peut biaiser les estimations statistiques, fausser les modèles et conduire à des conclusions erronées. Le traitement approprié des valeurs aberrantes est donc essentiel pour garantir la fiabilité des analyses.</p>
+<p><strong>Une valeur aberrante</strong> se définit comme une observation dont la distance à la distribution centrale dépasse significativement celle des autres points. Elle peut être légitime (phénomène rare) ou erronée (erreur de saisie, de mesure, etc.). Elle peut être causée par des erreurs humaines (saisie, codage), des problèmes techniques (capteurs défaillants) ou des caractéristiques intrinsèques de la population (phénomènes extrêmes).</p>
+<p>La détection de ces valeurs peut se faire de manière graphique ou statistique :</p>
+<ul>
+<li><p><strong>Approche graphique</strong> :</p>
+<ul>
+<li><strong>Boîte à moustaches (boxplot)</strong> : points au-delà des moustaches (1,5 × IQR) sont suspects.</li>
+<li><strong>Histogramme</strong> : pic isolé dans les extrémités.</li>
+<li><strong>Scatterplot</strong> (pour variables continues) : nuages de points mettant en évidence les points isolés.</li>
+</ul></li>
+<li><p><strong>Approche statistique</strong> :</p>
+<ul>
+<li><strong>Z-score</strong> : <span class="math inline">\(z_i = (x_i - \bar x)/s\)</span>. Valeurs |z| &gt; 3 souvent considérées comme aberrantes.</li>
+<li><strong>Méthode IQR</strong> : observations &lt; Q1 - 1,5 × IQR ou &gt; Q3 + 1,5 × IQR</li>
+<li><strong>Distance de Mahalanobis</strong> (multidimensionnel)</li>
+<li><strong>Score de robustesse</strong> : basés sur la médiane et l’écart absolu médian (MAD).
+<span class="math display">\[
+\mathrm{MAD} = \mathrm{median}(|x_i - \mathrm{median}(x)|)
+\]</span>
+<span class="math inline">\(\mathrm{robust\_z}_i = (x_i - m)/ (1.4826 \times \mathrm{MAD})\)</span></li>
+</ul></li>
+</ul>
+<p>Voici quelques méthodes de traitement des valeurs aberrantes :</p>
+<ul>
+<li><p><strong>Suppression des aberrations</strong> : C’est la méthode d’imputation la plus simple, mais elle est très dangereuse, car elle conduit à une perte d’information, et peut biaiser les données si les outliers sont légitimes.</p></li>
+<li><p><strong>Imputation</strong> : la valeur de remplacement peut être la moyenne, la médiane, ou une méthode plus sophistiquée (k-NN, régression multiple).</p></li>
+<li><p><strong>Winsorisation</strong> : il s’agit de rapprocher les valeurs extrêmes aux percentiles (p.ex. 5e et 95e).</p></li>
+<li><p><strong>Transformation</strong> : elle consiste à faire une transformation logarithmique, racine carrée, ou Box–Cox des données afin de réduire l’effet des valeurs extrêmes.</p></li>
+</ul>
+<p>Des modèles robustes comme les arbres de decision peuvent également être utilisés dans le cadre du traitement des valeus aberrantes.</p>
+</div>
+<div id="traitement-des-incohérences" class="section level3 unnumbered hasAnchor">
+<h3>6. Traitement des incohérences<a href="chapitre-1-partie-théorique.html#traitement-des-incohérences" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Une <strong>valeur incohérente</strong> fait référence à une donnée qui ne respecte pas les règles ou les attentes logiques d’un jeu de données, ce qui peut entraîner des erreurs dans l’analyse. Les incohérences dans les données peuvent être dues à plusieurs facteurs, comme une mauvaise collecte, des erreurs de saisie, ou des anomalies dans la logique des valeurs par rapport à d’autres variables.</p>
+<p>Voici quelques exemples de valeurs incohérentes :</p>
+<ul>
+<li><p><strong>Valeurs numériques hors de portée attendue</strong> : par exemple, une variable “âge” dans une enquête pourrait avoir une valeur de 200, ce qui est incohérent (car l’âge ne peut pas être supérieur à 120 dans la plupart des cas). Ou encore un salaire de 0 FCFA pour une personne travaillant dans une entreprise.</p></li>
+<li><p><strong>Valeurs textuelles incorrectes ou mal formatées</strong> : une variable “sexe” pourrait avoir une valeur “Homme” ou “Femme”, mais une valeur “Autre” ou “Indéterminé” dans un cas où cette information ne devrait pas exister. Ou une colonne “date de naissance” peut contenir des valeurs comme “1999-02-30” ou des formats incorrects (par exemple “31/02/2022”).</p></li>
+<li><p><strong>Incohérence entre plusieurs variables</strong> : dans une base de données sur les ventes, une “quantité vendue” pourrait être indiquée comme étant de 1000, mais si le “prix unitaire” est 0, cela créerait une incohérence par rapport au montant total de la vente. Si une variable “sexe” est indiquée comme “Femme” et une variable “État civil” indique “Marié(e)”, mais la colonne “Âge” est indiquée comme étant “10 ans”, il y a une incohérence dans l’ensemble des données.</p></li>
+<li><p><strong>Valeurs manquantes ou vides là où elles sont attendues</strong> : par exemple, une variable “numéro de téléphone” peut avoir une valeur vide pour un client qui a fourni ses informations.</p></li>
+</ul>
+<p>Il existe plusieurs approches pour détecter ces valeurs incohérentes dans un jeu de données. Ces approches peuvent être réalisées de manière manuelle (en inspectant les données) ou automatisée à l’aide de techniques de <em>contrôle de la qualité des données</em>.</p>
+<p>Voici quelques méthodes pour détecter des valeurs incohérentes :</p>
+<ul>
+<li><strong>Détection par validation des valeurs numériques</strong> :
+<ul>
+<li><em>Plage de valeurs</em> : Vérifiez que les valeurs numériques se trouvent dans une plage raisonnable. Par exemple, pour l’âge, les valeurs devraient être comprises entre 0 et 120 ans.</li>
+<li><em>Histogrammes et Boxplots</em> : Utilisez des graphiques comme les histogrammes ou boxplots pour visualiser les distributions des données et identifier les valeurs extrêmes ou aberrantes.</li>
+</ul></li>
+<li><strong>Détection par logique entre variables</strong> :
+<ul>
+<li>Utilisez des règles logiques pour vérifier les relations entre les variables. Par exemple, si “sexe” = “Homme”, alors “grossesse” ne peut pas être une variable valide.</li>
+<li>Vérifiez que les relations entre les variables sont cohérentes. Si une variable “quantité” a une valeur supérieure à une certaine limite et une variable “prix” est égale à zéro, l’analyse doit déclencher une alerte.</li>
+</ul></li>
+<li><strong>Vérification des formats de données</strong> :
+<ul>
+<li>Assurez-vous que les formats des dates, des numéros de téléphone, des adresses email, etc., sont conformes aux attentes. Par exemple, une date de naissance doit être dans un format valide (yyyy-mm-dd), sinon elle peut être signalée comme incohérente.</li>
+<li>En R, vous pouvez utiliser des expressions régulières (regex) pour vérifier les formats de chaînes.</li>
+</ul></li>
+<li><strong>Détection des valeurs manquantes ou vides</strong> :
+<ul>
+<li>Vérifiez les valeurs manquantes dans les colonnes essentielles à l’analyse. Une valeur vide dans une variable qui doit absolument être renseignée (comme le “numéro de téléphone” d’un client) est une incohérence.</li>
+<li>Utilisez des fonctions comme is.na() pour détecter les valeurs manquantes.</li>
+</ul></li>
+<li><strong>Utilisation d’algorithmes de détection de valeurs aberrantes</strong> :
+<ul>
+<li>Utilisez des algorithmes statistiques comme <em>IQR (interquartile range)</em> ou <em>Z-scores</em> pour identifier des valeurs anormales. Ces valeurs peuvent être considérées comme incohérentes si elles sont extrêmement éloignées de la moyenne.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></li>
+</ul></li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="1">
+<li id="fn1"><p>This is a footnote.<a href="chapitre-1-partie-théorique.html#fnref1" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+<footer style="
+  text-align: center;
+  padding: 1.5em 0;
+  font-size: 0.85em;
+  color: #444;
+  background-color: #f7f7f7;
+  border-top: 1px solid #ddd;
+  margin-top: 3em;
+">
+
+  <p style="margin-bottom: 0.5em;">
+  <strong>PRATIQUES D'ENQUETES AVEC R</strong>
+  </p>
+
+  <p style="margin-bottom: 0.5em;">
+    Projet réalisé par <strong>NGUEMFOUO NGOUMTSA Célina</strong> et <strong>Mamady I BERETE</strong> – <em>ENSAE Dakar, 2025</em><br>
+    dans le cadre du <em>cours de projets statistiques avec R</em>.
+  </p>
+
+</footer>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="introduction.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="chapitre-2-partie-pratique.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": false,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": null,
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

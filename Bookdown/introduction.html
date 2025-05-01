@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Introduction | PRATIQUES D’ENQUETES AVEC R</title>
+  <meta name="description" content="Introduction | PRATIQUES D’ENQUETES AVEC R" />
+  <meta name="generator" content="bookdown 0.43 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Introduction | PRATIQUES D’ENQUETES AVEC R" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Introduction | PRATIQUES D’ENQUETES AVEC R" />
+  
+  
+  
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="résumé.html"/>
+<link rel="next" href="chapitre-1-partie-théorique.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<link href="libs/bsTable-3.3.7/bootstrapTable.min.css" rel="stylesheet" />
+<script src="libs/bsTable-3.3.7/bootstrapTable.js"></script>
+
+
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="index.html">PRATIQUE DES ENQUETES AVEC R <br> Traitement à froid</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Exposé de R</a></li>
+<li class="chapter" data-level="" data-path="avant-propos.html"><a href="avant-propos.html"><i class="fa fa-check"></i>Avant-propos</a></li>
+<li class="chapter" data-level="" data-path="résumé.html"><a href="résumé.html"><i class="fa fa-check"></i>Résumé</a></li>
+<li class="chapter" data-level="" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i>Introduction</a></li>
+<li class="chapter" data-level="" data-path="chapitre-1-partie-théorique.html"><a href="chapitre-1-partie-théorique.html"><i class="fa fa-check"></i>Chapitre 1 : Partie théorique</a>
+<ul>
+<li class="chapter" data-level="" data-path="chapitre-1-partie-théorique.html"><a href="chapitre-1-partie-théorique.html#i.-présentation-dune-enquête"><i class="fa fa-check"></i>I. Présentation d’une enquête</a></li>
+<li class="chapter" data-level="" data-path="chapitre-1-partie-théorique.html"><a href="chapitre-1-partie-théorique.html#ii.-traitement-dune-base-de-données"><i class="fa fa-check"></i>II. Traitement d’une base de données</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="chapitre-2-partie-pratique.html"><a href="chapitre-2-partie-pratique.html"><i class="fa fa-check"></i>Chapitre 2 : Partie Pratique</a>
+<ul>
+<li class="chapter" data-level="" data-path="chapitre-2-partie-pratique.html"><a href="chapitre-2-partie-pratique.html#i.-cas-dune-enquête-ménage"><i class="fa fa-check"></i>I. Cas d’une enquête ménage</a></li>
+<li class="chapter" data-level="" data-path="chapitre-2-partie-pratique.html"><a href="chapitre-2-partie-pratique.html#ii.-cas-dune-enquête-individu"><i class="fa fa-check"></i>II. Cas d’une enquête individu</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="chapitre-3-automatisation-du-traitement-dune-base-de-données.html"><a href="chapitre-3-automatisation-du-traitement-dune-base-de-données.html"><i class="fa fa-check"></i>Chapitre 3 : Automatisation du traitement d’une base de données</a></li>
+<li class="chapter" data-level="" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i>Conclusion</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">PRATIQUES D’ENQUETES AVEC R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="introduction" class="section level1 unnumbered hasAnchor">
+<h1>Introduction<a href="introduction.html#introduction" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Dans le cadre de la formation à l’École Nationale de la Statistique et de l’Analyse Économique (ENSAE) de Dakar, l’utilisation d’outils informatiques modernes est primordiale pour le traitement et l’analyse des données issues des enquêtes statistiques. Parmi ces outils, <strong>R</strong> s’impose comme un logiciel incontournable en raison de sa flexibilité, de sa puissance et de ses capacités d’analyse avancées. En tant qu’outil de traitement statistique, <strong>R</strong> permet non seulement d’exécuter des analyses de données complexes, mais aussi d’assurer un nettoyage rigoureux des bases de données, un traitement efficace des valeurs manquantes et aberrantes, ainsi qu’une visualisation des résultats permettant une meilleure interprétation des données collectées.</p>
+<p>Ce document s’inscrit dans une démarche pédagogique visant à approfondir la maîtrise de <strong>R</strong> pour le traitement des données d’enquêtes. Il met en lumière l’importance de ce logiciel dans le cadre de la formation des futurs statisticiens économistes, en leur offrant une plateforme robuste pour manipuler les grandes bases de données et appliquer des méthodes statistiques de manière optimale. À travers cet exposé, nous explorons les diverses étapes du traitement des données provenant des enquêtes, notamment la gestion des doublons, des valeurs manquantes, ainsi que l’identification et le traitement des incohérences, tout en mettant l’accent sur l’utilisation de <strong>R Shiny</strong> pour une gestion dynamique et interactive des données.</p>
+<p>L’intégration de <strong>R</strong> dans notre parcours académique est un levier essentiel pour garantir une compréhension approfondie des processus statistiques et pour développer des compétences pratiques en analyse de données, essentielles dans notre futur rôle d’analystes.</p>
+
+</div>
+<footer style="
+  text-align: center;
+  padding: 1.5em 0;
+  font-size: 0.85em;
+  color: #444;
+  background-color: #f7f7f7;
+  border-top: 1px solid #ddd;
+  margin-top: 3em;
+">
+
+  <p style="margin-bottom: 0.5em;">
+  <strong>PRATIQUES D'ENQUETES AVEC R</strong>
+  </p>
+
+  <p style="margin-bottom: 0.5em;">
+    Projet réalisé par <strong>NGUEMFOUO NGOUMTSA Célina</strong> et <strong>Mamady I BERETE</strong> – <em>ENSAE Dakar, 2025</em><br>
+    dans le cadre du <em>cours de projets statistiques avec R</em>.
+  </p>
+
+</footer>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="résumé.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="chapitre-1-partie-théorique.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": false,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": null,
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
